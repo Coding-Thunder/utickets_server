@@ -9,7 +9,7 @@ async function bootstrap() {
     origin: "https://www.universalticketss.com", // Ensure no trailing slash
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     allowedHeaders: "Content-Type,Authorization", // Add other headers if needed
-    credentials: true, // Enable credentials
+    credentials: false, // Enable credentials
     preflightContinue: false,
     optionsSuccessStatus: 204,
   });
