@@ -6,7 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
-    origin: "https://www.universalticketss.com", // Ensure no trailing slash
+    origin: "https://universalticketss.com", // Ensure no trailing slash
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     allowedHeaders: "Content-Type,Authorization", // Add other headers if needed
     credentials: false, // Enable credentials
