@@ -1,0 +1,2 @@
+export const createSuccessMessageResponseForClient = (message: string) => ({ message, status: "Ok" })
+export const createErrorMessageResponseForClient = (message: string) => ({ message, status: "Not Ok" })
