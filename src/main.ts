@@ -6,11 +6,13 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
 
-  // Enable CORS with detailed configuration
   app.enableCors({
-    allowedHeaders: '*',
-    origin: '*',
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    optionsSuccessStatus: 204
   });
+
   await app.listen(process.env.DATABASE_PORT);
 }
 bootstrap();
