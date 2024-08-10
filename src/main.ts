@@ -8,7 +8,8 @@ async function bootstrap() {
 
   // Enable CORS with detailed configuration
   app.enableCors({
-    origin: 'http://localhost:3000', // Replace with your Next.js frontend origin
+    origin: 'https://universalticketss.com/', // Replace with your Next.js frontend origin
+    // origin: 'http://localhost:3000', // Replace with your Next.js frontend origin
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: 'Content-Type, Authorization', // Specify allowed headers
     credentials: true, // Allow credentials (e.g., cookies)
