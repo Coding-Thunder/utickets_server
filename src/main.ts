@@ -6,11 +6,13 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
 
-  // Enable CORS with detailed configuration
   app.enableCors({
-    allowedHeaders: '*',
-    origin: '*',
+    origin: 'https://universalticketss.com',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+    allowedHeaders: 'Content-Type, Authorization',
   });
+
   await app.listen(process.env.DATABASE_PORT);
 }
 bootstrap();
