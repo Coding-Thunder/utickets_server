@@ -19,6 +19,12 @@ export class AuthService {
       if (body.password !== body.confirm_password) {
         return { message: 'Password and confim passwords do not match', status: HttpStatus.OK }
       }
+
+      const userExists = await this.userModel.findOne({ email: body.email })
+
+      if (userExists) {
+        return { message: "User already exists please sign in", status: HttpStatus.CONFLICT, redirect: "/sign-in" }
+      }
       delete body.confirm_password;
 
       const hashed = await this.$hashPassword(body.password)
@@ -27,11 +33,7 @@ export class AuthService {
         body.password = hashed
       }
 
-      const userExists = await this.userModel.findOne({ email: body.email })
 
-      if (userExists) {
-        return { message: "User already exists please sign in", status: HttpStatus.CONFLICT, redirect: "/sign-in" }
-      }
 
       const newUser = await this.userModel.create(body)
 
@@ -51,7 +53,7 @@ export class AuthService {
     try {
       const userExists = await this.userModel.findOne({ email: body.email })
 
-      if (!userExists || !body || !(await this.$comparePassword(body.password, (await userExists).password))) {
+      if (!body || !(await this.$comparePassword(body.password, userExists.password))) {
         throw new UnauthorizedException('Invalid credentials');
       }
       // Generate and return JWT token

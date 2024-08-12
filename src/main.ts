@@ -7,7 +7,10 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "https://universalticketss.com");
+    res.header("Access-Control-Allow-Origin",
+      "https://universalticketss.com"
+      // "http://localhost:3001"
+    );
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     if (req.method === "OPTIONS") {
       res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE");
@@ -17,6 +20,7 @@ async function bootstrap() {
   });
   app.enableCors({
     origin: "https://universalticketss.com", // Ensure no trailing slash
+    // origin: "http://localhost:3001", // Ensure no trailing slash
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     // allowedHeaders: "*", // Add other headers if needed
   });
@@ -25,3 +29,4 @@ async function bootstrap() {
   await app.listen(process.env.DATABASE_PORT);
 }
 bootstrap();
+
