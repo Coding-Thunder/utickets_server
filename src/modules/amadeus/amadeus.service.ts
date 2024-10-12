@@ -7,8 +7,8 @@ export class AmadeusService {
   private amadeus: Amadeus;
 
   constructor(private configService: ConfigService) {
-    const CLIENT_ID = this.configService.get<string>('PRODUCTION_CLIENT_ID');
-    const CLIENT_SECRET = this.configService.get<string>('PRODUCTION_CLIENT_SECRET');
+    const CLIENT_ID = this.configService.get<string>('CLIENT_ID');
+    const CLIENT_SECRET = this.configService.get<string>('CLIENT_SECRET');
 
     // Initialize Amadeus client
     this.amadeus = new Amadeus({
