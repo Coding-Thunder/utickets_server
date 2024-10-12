@@ -72,9 +72,6 @@ export class AmadeusService {
       throw new InternalServerErrorException('Failed to fetch airports');
     }
   }
-
-  
-Copy code
   async getFlights(params: {
     from: string; // IATA code for origin
     to: string; // IATA code for destination
@@ -89,9 +86,11 @@ Copy code
       await this.authenticate();
     }
 
+    // Normalize travel class by replacing spaces with underscores and converting to uppercase
+    const travelClass = params.classType.toUpperCase().replace(/ /g, '_'); // Use regex to replace spaces with underscores
+
     // Validate travel class
     const allowedClasses = ['ECONOMY', 'PREMIUM_ECONOMY', 'BUSINESS', 'FIRST'];
-    const travelClass = params.classType.toUpperCase();
 
     if (!allowedClasses.includes(travelClass)) {
       console.error(`Invalid travel class: ${travelClass}. Allowed values are: ${allowedClasses.join(', ')}`);
@@ -123,4 +122,5 @@ Copy code
       throw new InternalServerErrorException('Failed to fetch flights');
     }
   }
+
 }
