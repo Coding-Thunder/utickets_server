@@ -9,7 +9,7 @@ async function bootstrap() {
   app.use((req: { method: string; }, res: { header: (arg0: string, arg1: string) => void; status: (arg0: number) => { (): any; new(): any; json: { (arg0: {}): any; new(): any; }; }; }, next: () => void) => {
     res.header("Access-Control-Allow-Origin",
       "https://universalticketss.com"
-      // "http://localhost:3001"
+      // "http://localhost:3000clear "
     );
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     if (req.method === "OPTIONS") {
@@ -20,7 +20,7 @@ async function bootstrap() {
   });
   app.enableCors({
     origin: "https://universalticketss.com", // Ensure no trailing slash
-    // origin: "http://localhost:3001", // Ensure no trailing slash
+    // origin: "http://localhost:3000", // Ensure no trailing slash
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     // allowedHeaders: "*", // Add other headers if needed
   });
