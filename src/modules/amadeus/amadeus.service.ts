@@ -24,7 +24,7 @@ export class AmadeusService {
       const clientId = this.configService.get<string>('CLIENT_ID');
       const clientSecret = this.configService.get<string>('CLIENT_SECRET');
 
-      const response = await axios.post('https://api.amadeus.com/v1/security/oauth2/token', 
+      const response = await axios.post('https://api.amadeus.com/v1/security/oauth2/token',
         new URLSearchParams({
           grant_type: 'client_credentials',
           client_id: clientId,
@@ -73,6 +73,8 @@ export class AmadeusService {
     }
   }
 
+  
+Copy code
   async getFlights(params: {
     from: string; // IATA code for origin
     to: string; // IATA code for destination
@@ -87,6 +89,15 @@ export class AmadeusService {
       await this.authenticate();
     }
 
+    // Validate travel class
+    const allowedClasses = ['ECONOMY', 'PREMIUM_ECONOMY', 'BUSINESS', 'FIRST'];
+    const travelClass = params.classType.toUpperCase();
+
+    if (!allowedClasses.includes(travelClass)) {
+      console.error(`Invalid travel class: ${travelClass}. Allowed values are: ${allowedClasses.join(', ')}`);
+      throw new InternalServerErrorException(`Invalid travel class: ${travelClass}. Allowed values are: ${allowedClasses.join(', ')}`);
+    }
+
     try {
       const response = await this.amadeusClient.get('/v2/shopping/flight-offers', {
         params: {
@@ -96,7 +107,7 @@ export class AmadeusService {
           adults: params.adults,
           children: params.children,
           infants: params.infants,
-          travelClass: params.classType.toUpperCase(), // Ensure classType is uppercase
+          travelClass: travelClass, // Use the validated travel class
         },
       });
 
