@@ -8,8 +8,11 @@ export class AmadeusService {
   private accessToken: string | null = null;
 
   constructor(private configService: ConfigService) {
-    const baseURL = 'https://api.amadeus.com'; // Production URL
 
+    const baseURL = process.env.PRODUCTION_BASE_URL
+
+
+    
     // Initialize Axios instance
     this.amadeusClient = axios.create({
       baseURL,
@@ -107,6 +110,7 @@ export class AmadeusService {
           children: params.children,
           infants: params.infants,
           travelClass: travelClass, // Use the validated travel class
+          currencyCode: 'USD', // Ensure prices are in USD
         },
       });
 
