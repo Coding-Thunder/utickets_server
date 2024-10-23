@@ -1,12 +1,23 @@
-// src/dto/create-booking.dto.ts
-import { IsArray, IsEmail, IsNotEmpty, IsString } from 'class-validator';
+// create-booking.dto.ts
+import { IsEmail, IsNotEmpty, IsString, IsArray, IsObject, IsOptional, IsDateString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
-export class TravelerDto {
+export class ContactInfo {
+  @IsString()
+  @IsNotEmpty()
+  phone: string;
+
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+}
+
+export class Traveler {
   @IsString()
   @IsNotEmpty()
   firstName: string;
 
+  @IsOptional()
   @IsString()
   middleName?: string;
 
@@ -18,12 +29,32 @@ export class TravelerDto {
   @IsNotEmpty()
   gender: string;
 
-  @IsString()
-  @IsNotEmpty()
-  dob: string; // Consider using a Date type with proper validation
+  @IsDateString() // Use Date format for validation
+  dob: string;
 }
 
-export class CardInfoDto {
+export class Price {
+  @IsString()
+  @IsNotEmpty()
+  currency: string;
+
+  @IsString()
+  @IsNotEmpty()
+  grandTotal: string;
+}
+
+export class SelectedFlight {
+  @IsString()
+  @IsNotEmpty()
+  flightNumber: string;
+
+  @ValidateNested()
+  @Type(() => Price)
+  @IsNotEmpty()
+  price: Price;
+}
+
+export class CardInfo {
   @IsString()
   @IsNotEmpty()
   number: string;
@@ -45,7 +76,7 @@ export class CardInfoDto {
   name: string;
 }
 
-export class BillingInfoDto {
+export class BillingInfo {
   @IsString()
   @IsNotEmpty()
   country: string;
@@ -67,28 +98,30 @@ export class BillingInfoDto {
   postalCode: string;
 }
 
-export class ContactInfoDto {
-  @IsString()
-  @IsNotEmpty()
-  phone: string;
-
-  @IsEmail()
-  email: string;
-}
-
 export class CreateBookingDto {
-  @Type(() => ContactInfoDto)
-  contactInfo: ContactInfoDto;
+  @ValidateNested()
+  @Type(() => ContactInfo)
+  @IsNotEmpty()
+  contactInfo: ContactInfo;
 
   @IsArray()
-  @Type(() => TravelerDto)
-  travelers: TravelerDto[];
+  @ValidateNested({ each: true })
+  @Type(() => Traveler)
+  @IsNotEmpty()
+  travelers: Traveler[];
 
-  selectedFlight: any; // Define a specific type if possible
+  @ValidateNested()
+  @Type(() => SelectedFlight)
+  @IsNotEmpty()
+  selectedFlight: SelectedFlight;
 
-  @Type(() => CardInfoDto)
-  cardInfo: CardInfoDto;
+  @ValidateNested()
+  @Type(() => CardInfo)
+  @IsNotEmpty()
+  cardInfo: CardInfo;
 
-  @Type(() => BillingInfoDto)
-  billingInfo: BillingInfoDto;
+  @ValidateNested()
+  @Type(() => BillingInfo)
+  @IsNotEmpty()
+  billingInfo: BillingInfo;
 }

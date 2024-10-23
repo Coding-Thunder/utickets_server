@@ -1,38 +1,45 @@
+// bookings.schema.ts
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-@Schema()
-export class Booking extends Document {
-  @Prop({ required: true })
-  contactInfo: { phone: string; email: string };
+export type BookingDocument = Booking & Document;
 
-  @Prop({ 
-    type: [
-      {
-        firstName: { type: String, required: true },
-        middleName: { type: String },
-        lastName: { type: String, required: true },
-        gender: { type: String, required: true },
-        dob: { type: String, required: true }, // You might want to use a Date type if appropriate
-      }
-    ],
-    required: true 
-  })
-  travelers: {
+@Schema()
+export class Booking {
+  @Prop({ required: true })
+  contactInfo: {
+    phone: string;
+    email: string;
+  };
+
+  @Prop({ required: true, type: [Object] }) // Specify type for travelers
+  travelers: Array<{
     firstName: string;
     middleName?: string;
     lastName: string;
-    gender: string;
-    dob: string;
-  }[];
+    gender: string; // e.g., "male", "female"
+    dob: Date; // Use Date type
+  }>;
 
-  @Prop({ required: true })
-  selectedFlight: any; // Adjust this type as necessary
+  @Prop({ required: true, type: Object }) // Specify type for selectedFlight
+  selectedFlight: {
+    flightNumber: string;
+    price: {
+      currency: string;
+      grandTotal: string;
+    };
+  };
 
-  @Prop({ required: true })
-  cardInfo: { number: string; month: string; year: string; cvc: string; name: string };
+  @Prop({ required: true, type: Object }) // Specify type for cardInfo
+  cardInfo: {
+    number: string;
+    month: string;
+    year: string;
+    cvc: string;
+    name: string;
+  };
 
-  @Prop({ required: true })
+  @Prop({ required: true, type: Object }) // Specify type for billingInfo
   billingInfo: {
     country: string;
     address: string;

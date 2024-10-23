@@ -5,13 +5,15 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from '../auth/auth.module';
 import { AmadeusModule } from 'src/modules/amadeus/amadeus.module';
+import { BookingsModule } from 'src/bookings/bookings.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }), // Make ConfigModule global
     MongooseModule.forRoot(`${process.env.DATABASE_MONGO_URI}`),
     AuthModule,
-    AmadeusModule
+    AmadeusModule,
+    BookingsModule
   ],
   controllers: [AppController],
   providers: [AppService],
