@@ -51,19 +51,35 @@ export class AuthService {
 
   async existingUserLogin(body: SignInDto) {
     try {
-      const userExists = await this.userModel.findOne({ email: body.email })
 
-      if (!body || !(await this.$comparePassword(body.password, userExists.password))) {
+      // Check if the user exists by email
+      const userExists = await this.userModel.findOne({ email: body.email });
+
+      // If the user does not exist, throw an UnauthorizedException
+      if (!userExists) {
+        throw new UnauthorizedException('User Does not exists');
+      }
+
+      // Check if the password matches
+      if (!(await this.$comparePassword(body.password, userExists.password))) {
         throw new UnauthorizedException('Invalid credentials');
       }
+
       // Generate and return JWT token
       const token = await this.$generateJwtToken(userExists.email);
-      const user = { full_name: userExists.full_name, email: userExists.email }
-      return { status: HttpStatus.OK, user, token: `Bearer ${token}`, redirect: "/" };
+      const user = { full_name: userExists.full_name, email: userExists.email };
+
+      return {
+        status: HttpStatus.OK,
+        user,
+        token: `Bearer ${token}`,
+        redirect: "/",
+      };
     } catch (error) {
-      throw new InternalServerErrorException("Login Failed")
+      throw new InternalServerErrorException(error.message);
     }
   }
+
 
   async verifyRecaptcha(recaptchaToken: string): Promise<boolean> {
     const secretKey = 'YOUR_GOOGLE_RECAPTCHA_SECRET_KEY';

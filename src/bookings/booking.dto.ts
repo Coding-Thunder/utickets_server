@@ -1,4 +1,5 @@
-import { IsEmail, IsNotEmpty, IsString, IsArray, IsObject, IsOptional, IsDateString, ValidateNested } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, IsArray, IsOptional, IsDateString, ValidateNested, IsInt, Min } from 'class-validator';
+
 import { Type } from 'class-transformer';
 
 class ContactInfo {
@@ -247,4 +248,20 @@ export class CreateBookingDto {
   @ValidateNested()
   @Type(() => BillingInfo)
   billingInfo: BillingInfo;
+}
+
+
+
+
+
+export class PaginateDto {
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  skip?: number;
+
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  limit?: number;
 }
