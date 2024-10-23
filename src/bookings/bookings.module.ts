@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { BookingController } from './booking.controller';
-import { BookingService } from './booking.service';
-import { Booking, BookingSchema } from '../schemas/bookings.schema';
+import { Booking, BookingSchema } from '../schemas/bookings.schema'; // Adjust the path as needed
+import { BookingController } from './booking.controller'; // Adjust the path as needed
+import { BookingService } from './booking.service'; // Adjust the path as needed
 
 @Module({
   imports: [
@@ -11,4 +11,4 @@ import { Booking, BookingSchema } from '../schemas/bookings.schema';
   controllers: [BookingController],
   providers: [BookingService],
 })
-export class BookingsModule {}
+export class BookingModule {}

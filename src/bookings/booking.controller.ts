@@ -4,7 +4,7 @@ import { BookingService } from './booking.service';
 import { Booking } from '../schemas/bookings.schema';
 import { CreateBookingDto } from './booking.dto';
 
-@Controller('bookings')
+@Controller('booking')
 export class BookingController {
   constructor(private readonly bookingService: BookingService) {}
 

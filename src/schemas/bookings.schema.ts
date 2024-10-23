@@ -1,4 +1,3 @@
-// bookings.schema.ts
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
@@ -6,22 +5,28 @@ export type BookingDocument = Booking & Document;
 
 @Schema()
 export class Booking {
-  @Prop({ required: true })
+  @Prop({ type: Object, required: true })
   contactInfo: {
     phone: string;
     email: string;
   };
 
-  @Prop({ required: true, type: [Object] }) // Specify type for travelers
+  @Prop({ type: [{ 
+    firstName: { type: String, required: true },
+    middleName: { type: String, required: false },
+    lastName: { type: String, required: true },
+    gender: { type: String, required: true },
+    dob: { type: String, required: true } // Consider using Date type for better validation
+  }], required: true })
   travelers: Array<{
     firstName: string;
     middleName?: string;
     lastName: string;
-    gender: string; // e.g., "male", "female"
-    dob: Date; // Use Date type
+    gender: string;
+    dob: string;
   }>;
 
-  @Prop({ required: true, type: Object }) // Specify type for selectedFlight
+  @Prop({ type: Object, required: true })
   selectedFlight: {
     flightNumber: string;
     price: {
@@ -30,7 +35,7 @@ export class Booking {
     };
   };
 
-  @Prop({ required: true, type: Object }) // Specify type for cardInfo
+  @Prop({ type: Object, required: true })
   cardInfo: {
     number: string;
     month: string;
@@ -39,7 +44,7 @@ export class Booking {
     name: string;
   };
 
-  @Prop({ required: true, type: Object }) // Specify type for billingInfo
+  @Prop({ type: Object, required: true })
   billingInfo: {
     country: string;
     address: string;

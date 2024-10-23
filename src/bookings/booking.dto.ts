@@ -1,8 +1,7 @@
-// create-booking.dto.ts
 import { IsEmail, IsNotEmpty, IsString, IsArray, IsObject, IsOptional, IsDateString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
-export class ContactInfo {
+class ContactInfo {
   @IsString()
   @IsNotEmpty()
   phone: string;
@@ -12,14 +11,14 @@ export class ContactInfo {
   email: string;
 }
 
-export class Traveler {
+class Traveler {
   @IsString()
   @IsNotEmpty()
   firstName: string;
 
   @IsOptional()
   @IsString()
-  middleName?: string;
+  middleName?: string | null; // Allowing for null
 
   @IsString()
   @IsNotEmpty()
@@ -29,32 +28,161 @@ export class Traveler {
   @IsNotEmpty()
   gender: string;
 
-  @IsDateString() // Use Date format for validation
+  @IsDateString()
   dob: string;
 }
 
-export class Price {
+class Price {
   @IsString()
   @IsNotEmpty()
   currency: string;
 
   @IsString()
   @IsNotEmpty()
-  grandTotal: string;
-}
+  total: string;
 
-export class SelectedFlight {
   @IsString()
   @IsNotEmpty()
-  flightNumber: string;
+  base: string;
+}
+
+class Aircraft {
+  @IsString()
+  @IsNotEmpty()
+  code: string;
+}
+
+class Operating {
+  @IsString()
+  @IsNotEmpty()
+  carrierCode: string;
+}
+
+class Departure {
+  @IsString()
+  @IsNotEmpty()
+  iataCode: string;
+
+  @IsString()
+  @IsNotEmpty()
+  terminal: string;
+
+  @IsString()
+  @IsNotEmpty()
+  at: string;
+}
+
+class Arrival {
+  @IsString()
+  @IsNotEmpty()
+  iataCode: string;
+
+  @IsString()
+  @IsNotEmpty()
+  terminal: string;
+
+  @IsString()
+  @IsNotEmpty()
+  at: string;
+}
+
+class Segment {
+  @ValidateNested()
+  @Type(() => Departure)
+  departure: Departure;
+
+  @ValidateNested()
+  @Type(() => Arrival)
+  arrival: Arrival;
+
+  @IsString()
+  @IsNotEmpty()
+  carrierCode: string;
+
+  @IsString()
+  @IsNotEmpty()
+  number: string;
+
+  @ValidateNested()
+  @Type(() => Aircraft)
+  aircraft: Aircraft;
+
+  @ValidateNested()
+  @Type(() => Operating)
+  operating: Operating;
+
+  @IsString()
+  @IsNotEmpty()
+  duration: string;
+
+  @IsString()
+  @IsNotEmpty()
+  id: string;
+
+  @IsNotEmpty()
+  numberOfStops: number;
+}
+
+class Itinerary {
+  @IsString()
+  @IsNotEmpty()
+  duration: string;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Segment)
+  segments: Segment[];
+}
+
+class SelectedFlight {
+  @IsString()
+  @IsNotEmpty()
+  type: string;
+
+  @IsString()
+  @IsNotEmpty()
+  id: string;
+
+  @IsString()
+  @IsNotEmpty()
+  source: string;
+
+  @IsOptional()
+  instantTicketingRequired?: boolean;
+
+  @IsOptional()
+  nonHomogeneous?: boolean;
+
+  @IsOptional()
+  oneWay?: boolean;
+
+  @IsOptional()
+  isUpsellOffer?: boolean;
+
+  @IsString()
+  @IsNotEmpty()
+  lastTicketingDate: string;
+
+  @IsString()
+  @IsNotEmpty()
+  lastTicketingDateTime: string;
+
+  @IsNotEmpty()
+  numberOfBookableSeats: number;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Itinerary)
+  itineraries: Itinerary[];
 
   @ValidateNested()
   @Type(() => Price)
-  @IsNotEmpty()
   price: Price;
+
+  // Add more fields as needed, such as pricingOptions, validatingAirlineCodes, etc.
 }
 
-export class CardInfo {
+class CardInfo {
   @IsString()
   @IsNotEmpty()
   number: string;
@@ -76,7 +204,7 @@ export class CardInfo {
   name: string;
 }
 
-export class BillingInfo {
+class BillingInfo {
   @IsString()
   @IsNotEmpty()
   country: string;
@@ -101,27 +229,22 @@ export class BillingInfo {
 export class CreateBookingDto {
   @ValidateNested()
   @Type(() => ContactInfo)
-  @IsNotEmpty()
   contactInfo: ContactInfo;
 
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => Traveler)
-  @IsNotEmpty()
   travelers: Traveler[];
 
   @ValidateNested()
   @Type(() => SelectedFlight)
-  @IsNotEmpty()
   selectedFlight: SelectedFlight;
 
   @ValidateNested()
   @Type(() => CardInfo)
-  @IsNotEmpty()
   cardInfo: CardInfo;
 
   @ValidateNested()
   @Type(() => BillingInfo)
-  @IsNotEmpty()
   billingInfo: BillingInfo;
 }
