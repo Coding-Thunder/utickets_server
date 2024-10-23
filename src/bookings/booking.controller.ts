@@ -6,6 +6,7 @@ import {
     Get,
     Query,
     InternalServerErrorException,
+    Param,
 } from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { Booking } from '../schemas/bookings.schema';
@@ -37,5 +38,15 @@ export class BookingController {
         } catch (error) {
             throw new InternalServerErrorException('An error occurred while fetching bookings.');
         }
+    }
+
+    @Get() // This will be the endpoint for getting all bookings
+    async getAllBookings(@Query() paginateDto: PaginateDto): Promise<Booking[]> {
+        return this.bookingService.getAllBookings(paginateDto);
+    }
+
+    @Get(':id')
+    async getBookingById(@Param('id') id: string): Promise<Booking> {
+      return this.bookingService.getBookingById(id); // Assuming findById is a method in your service
     }
 }
