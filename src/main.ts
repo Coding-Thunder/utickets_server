@@ -8,6 +8,7 @@ async function bootstrap() {
     origin: [
       'http://localhost:3000', // Add your frontend origin
       'https://universalticketss.com', // Allow production origin
+      'https://crm.universalticketss.com', // Allow production origin
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
