@@ -9,8 +9,8 @@ import {
     Param,
 } from '@nestjs/common';
 import { BookingService } from './booking.service';
-import { Booking } from '../schemas/bookings.schema';
 import { CreateBookingDto, PaginateDto } from './booking.dto';
+import { Booking } from 'src/schemas/bookings.schema';
 
 @Controller('booking')
 export class BookingController {
@@ -25,6 +25,17 @@ export class BookingController {
         }
     }
 
+
+    @Get('count')
+    async getBookingCount() {
+        try {
+            const count = await this.bookingService.getBookingsCount();
+            return { count };
+        } catch (error) {
+            throw new InternalServerErrorException('Failed to fetch booking count.');
+        }
+    }
+    
     @Get('by-email')
     async getBookingsByContactInfo(
         @Query('email') email: string,
@@ -49,4 +60,5 @@ export class BookingController {
     async getBookingById(@Param('id') id: string): Promise<Booking> {
       return this.bookingService.getBookingById(id); // Assuming findById is a method in your service
     }
+
 }

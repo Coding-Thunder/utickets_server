@@ -7,6 +7,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:3000', // Add your frontend origin
+      'http://localhost:3001', // Add your frontend origin
       'https://universalticketss.com', // Allow production origin
       'https://crm.universalticketss.com', // Allow production origin
     ],

@@ -1,7 +1,7 @@
 import { Injectable, ConflictException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Booking } from '../schemas/bookings.schema';
+import { Booking } from '../../schemas/bookings.schema';
 import { CreateBookingDto, PaginateDto } from './booking.dto';
 
 @Injectable()
@@ -53,4 +53,12 @@ export class BookingService {
             throw new InternalServerErrorException('An error occurred while fetching the booking.');
         }
     }
+    async getBookingsCount(): Promise<number> {
+        try {
+            return await this.bookingModel.countDocuments().exec();
+        } catch (error) {
+            throw new InternalServerErrorException('An error occurred while fetching the booking count.');
+        }
+    }
+    
 }

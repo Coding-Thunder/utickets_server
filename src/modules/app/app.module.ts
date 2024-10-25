@@ -5,7 +5,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from '../auth/auth.module';
 import { AmadeusModule } from 'src/modules/amadeus/amadeus.module';
-import { BookingModule } from 'src/bookings/bookings.module';
+import { BookingModule } from '../bookings/bookings.module';
+import { CrmModule } from '../crm/crm.module';
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { BookingModule } from 'src/bookings/bookings.module';
     MongooseModule.forRoot(`${process.env.DATABASE_MONGO_URI}`),
     AuthModule,
     AmadeusModule,
-    BookingModule
+    BookingModule,
+    CrmModule
   ],
   controllers: [AppController],
   providers: [AppService],
