@@ -61,17 +61,20 @@ export class Booking {
   @Prop({
     type: {
       employee: { type: Types.ObjectId, ref: 'Employee', default: null },
-      value: { type: String, default: 'false' }
+      value: { type: Boolean, default: false }
     },
     required: false
   })
   status?: {
     employee: Types.ObjectId | null;
-    value: 'false' | 'Pending' | 'In progress' | 'Completed';
+    value: true | false;
   };
 
   @Prop({ unique: true })
   bookingId: string;
+
+  @Prop({ default: Date.now }) // Automatically set the date when created
+  createdAt: Date;
 }
 
 export const BookingSchema = SchemaFactory.createForClass(Booking);

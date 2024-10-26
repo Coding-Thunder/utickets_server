@@ -1,6 +1,6 @@
 import { Injectable, ConflictException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, ObjectId, Types } from 'mongoose';
 import { Booking } from '../../schemas/bookings.schema';
 import { CreateBookingDto, PaginateDto } from './booking.dto';
 import { sentTransactionalMail } from 'src/utils/emails';
@@ -32,7 +32,6 @@ export class BookingService {
             });
     
             await newBooking.save();
-    
             // Send a transactional email with booking confirmation
             try {
                 await sentTransactionalMail(newBooking.bookingId, newBooking.contactInfo.email);
@@ -85,11 +84,23 @@ export class BookingService {
             throw new InternalServerErrorException('An error occurred while fetching the booking.');
         }
     }
-    async getBookingsCount(): Promise<number> {
+
+    async assignEmployeeToBooking(bookingId: string, employeeId: Types.ObjectId): Promise<Booking> {
         try {
-            return await this.bookingModel.countDocuments().exec();
+            // Find the booking by ID
+            const booking = await this.bookingModel.findById(bookingId).exec();
+            if (!booking) {
+                throw new NotFoundException(`Booking with ID ${bookingId} not found`);
+            }
+    
+            // Update the booking's status to assign the employee
+            booking.status.employee = employeeId; // Set the employee ID
+            booking.status.value = true; // Optionally set the value to true if required
+            await booking.save(); // Save the updated booking
+    
+            return booking; // Return the updated booking
         } catch (error) {
-            throw new InternalServerErrorException('An error occurred while fetching the booking count.');
+            throw new InternalServerErrorException('An error occurred while assigning the employee to the booking.');
         }
     }
 

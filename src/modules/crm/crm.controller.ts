@@ -6,7 +6,7 @@ import { CreateEmployeeDto, SendOtpDto, VerifyOtpDto } from './crm.dto';
 
 @Controller('crm')
 export class CrmController {
-    constructor(private readonly crmService: CrmService) {}
+    constructor(private readonly crmService: CrmService) { }
 
     @Post('employees')
     async createEmployee(@Body() createEmployeeDto: CreateEmployeeDto): Promise<Employee> {
@@ -16,12 +16,6 @@ export class CrmController {
     @Get('employees')
     async getEmployees(): Promise<Employee[]> {
         return this.crmService.getEmployees();
-    }
-
-    @Get('employees/count')
-    async getEmployeeCount(): Promise<{ count: number }> {
-        const count = await this.crmService.getEmployeeCount();
-        return { count };
     }
 
     @Post('otp/send') // Endpoint to send OTP
@@ -35,4 +29,5 @@ export class CrmController {
         const valid = await this.crmService.verifyOtp(verifyOtpDto.email, verifyOtpDto.otp);
         return { valid };
     }
+
 }

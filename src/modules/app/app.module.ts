@@ -7,6 +7,7 @@ import { AuthModule } from '../auth/auth.module';
 import { AmadeusModule } from 'src/modules/amadeus/amadeus.module';
 import { BookingModule } from '../bookings/bookings.module';
 import { CrmModule } from '../crm/crm.module';
+import { DashboardModule } from '../dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { CrmModule } from '../crm/crm.module';
     AuthModule,
     AmadeusModule,
     BookingModule,
-    CrmModule
+    CrmModule,
+    DashboardModule
   ],
   controllers: [AppController],
   providers: [AppService],
