@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Booking } from '../../schemas/bookings.schema';
 import { CreateBookingDto, PaginateDto } from './booking.dto';
+import { sentTransactionalMail } from 'src/utils/emails';
 
 @Injectable()
 export class BookingService {
@@ -10,12 +11,43 @@ export class BookingService {
 
     async createBooking(bookingDetails: CreateBookingDto): Promise<Booking> {
         try {
-            const newBooking = new this.bookingModel(bookingDetails);
-            return await newBooking.save();
+            // Fetch the last created booking to get the latest bookingId
+            const lastBooking = await this.bookingModel.findOne().sort({ bookingId: -1 }).exec();
+    
+            // Generate the new bookingId based on the last one
+            const newIdNumber = lastBooking ? parseInt(lastBooking.bookingId.replace('UTK', '')) + 1 : 1;
+            const newBookingId = `UTK${newIdNumber}`;
+    
+            // Set default status values
+            const status = {
+                employee: null, // No employee assigned by default
+                value: false, // Booking not picked by a salesperson
+            };
+    
+            // Create the new booking with generated bookingId and default status
+            const newBooking = new this.bookingModel({
+                ...bookingDetails,
+                bookingId: newBookingId,
+                status, // Set the default status
+            });
+    
+            await newBooking.save();
+    
+            // Send a transactional email with booking confirmation
+            try {
+                await sentTransactionalMail(newBooking.bookingId, newBooking.contactInfo.email);
+            } catch (emailError) {
+                console.error('Failed to send booking confirmation email:', emailError);
+                // Optionally, handle email failure (e.g., retry, notify admin)
+            }
+    
+            return newBooking;
         } catch (error) {
             throw new InternalServerErrorException('An error occurred while creating the booking.');
         }
     }
+    
+
 
     async getBookingsByEmail(email: string, paginateDto?: PaginateDto): Promise<Booking[]> {
         try {
@@ -60,5 +92,5 @@ export class BookingService {
             throw new InternalServerErrorException('An error occurred while fetching the booking count.');
         }
     }
-    
+
 }

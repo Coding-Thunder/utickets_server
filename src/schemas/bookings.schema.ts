@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 export type BookingDocument = Booking & Document;
 
@@ -11,13 +11,16 @@ export class Booking {
     email: string;
   };
 
-  @Prop({ type: [{ 
-    firstName: { type: String, required: true },
-    middleName: { type: String, required: false },
-    lastName: { type: String, required: true },
-    gender: { type: String, required: true },
-    dob: { type: String, required: true } // Consider using Date type for better validation
-  }], required: true })
+  @Prop({
+    type: [{
+      firstName: { type: String, required: true },
+      middleName: { type: String, required: false },
+      lastName: { type: String, required: true },
+      gender: { type: String, required: true },
+      dob: { type: String, required: true }
+    }],
+    required: true
+  })
   travelers: Array<{
     firstName: string;
     middleName?: string;
@@ -52,6 +55,23 @@ export class Booking {
     state: string;
     postalCode: string;
   };
+
+  // New fields with default values
+
+  @Prop({
+    type: {
+      employee: { type: Types.ObjectId, ref: 'Employee', default: null },
+      value: { type: String, default: 'false' }
+    },
+    required: false
+  })
+  status?: {
+    employee: Types.ObjectId | null;
+    value: 'false' | 'Pending' | 'In progress' | 'Completed';
+  };
+
+  @Prop({ unique: true })
+  bookingId: string;
 }
 
 export const BookingSchema = SchemaFactory.createForClass(Booking);
