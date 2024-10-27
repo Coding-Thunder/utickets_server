@@ -1,5 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString, IsArray, IsOptional, IsDateString, ValidateNested, IsInt, Min } from 'class-validator';
-
+import { IsEmail, IsNotEmpty, IsString, IsArray, IsOptional, IsDateString, ValidateNested, IsInt, Min, IsBoolean } from 'class-validator';
 import { Type } from 'class-transformer';
 
 class ContactInfo {
@@ -121,6 +120,8 @@ class Segment {
   id: string;
 
   @IsNotEmpty()
+  @IsInt() // Ensure it's an integer
+  @Min(0) // Ensure non-negative
   numberOfStops: number;
 }
 
@@ -169,6 +170,8 @@ class SelectedFlight {
   lastTicketingDateTime: string;
 
   @IsNotEmpty()
+  @IsInt() // Ensure it's an integer
+  @Min(0) // Ensure non-negative
   numberOfBookableSeats: number;
 
   @IsArray()
@@ -180,7 +183,10 @@ class SelectedFlight {
   @Type(() => Price)
   price: Price;
 
-  // Add more fields as needed, such as pricingOptions, validatingAirlineCodes, etc.
+  // Additional fields for selected flight
+  @IsOptional()
+  @IsString()
+  notes?: string; // Optional notes for the flight
 }
 
 class CardInfo {
@@ -225,6 +231,27 @@ class BillingInfo {
   @IsString()
   @IsNotEmpty()
   postalCode: string;
+
+  @IsOptional()
+  @IsString()
+  additionalNotes?: string; // Optional additional notes for billing
+}
+
+class TravelerDTO {
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Traveler)
+  adults: Traveler[];
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Traveler)
+  childrens: Traveler[]; // Updated field name
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Traveler)
+  infants: Traveler[];
 }
 
 export class CreateBookingDto {
@@ -232,10 +259,9 @@ export class CreateBookingDto {
   @Type(() => ContactInfo)
   contactInfo: ContactInfo;
 
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => Traveler)
-  travelers: Traveler[];
+  @ValidateNested() // Ensure validation for the TravelerDTO
+  @Type(() => TravelerDTO)
+  travelers: TravelerDTO;
 
   @ValidateNested()
   @Type(() => SelectedFlight)
@@ -248,11 +274,16 @@ export class CreateBookingDto {
   @ValidateNested()
   @Type(() => BillingInfo)
   billingInfo: BillingInfo;
+
+  // Additional fields for the booking details
+  @IsOptional()
+  @IsBoolean()
+  isConfirmed?: boolean; // Optional confirmation flag for the booking
+
+  @IsOptional()
+  @IsString()
+  bookingReference?: string; // Optional booking reference
 }
-
-
-
-
 
 export class PaginateDto {
   @IsOptional()

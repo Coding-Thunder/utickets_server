@@ -12,29 +12,103 @@ export class Booking {
   };
 
   @Prop({
-    type: [{
-      firstName: { type: String, required: true },
-      middleName: { type: String, required: false },
-      lastName: { type: String, required: true },
-      gender: { type: String, required: true },
-      dob: { type: String, required: true }
-    }],
-    required: true
+    type: {
+      adults: [{
+        type: { type: String, required: true }, // Type field indicating the category of the traveler
+        firstName: { type: String, required: true },
+        middleName: { type: String, required: false },
+        lastName: { type: String, required: true },
+        gender: { type: String, required: true },
+        dob: { type: String, required: true },
+      }],
+      childrens: [{ // Changed from 'children' to 'childrens'
+        type: { type: String, required: true }, // e.g., "children"
+        firstName: { type: String, required: true },
+        middleName: { type: String, required: false },
+        lastName: { type: String, required: true },
+        gender: { type: String, required: true },
+        dob: { type: String, required: true },
+      }],
+      infants: [{
+        type: { type: String, required: true }, // e.g., "infants"
+        firstName: { type: String, required: true },
+        middleName: { type: String, required: false },
+        lastName: { type: String, required: true },
+        gender: { type: String, required: true },
+        dob: { type: String, required: true },
+      }],
+    },
+    required: true,
   })
-  travelers: Array<{
-    firstName: string;
-    middleName?: string;
-    lastName: string;
-    gender: string;
-    dob: string;
-  }>;
+  travelers: {
+    adults: Array<{
+      type: string; // e.g., "adults"
+      firstName: string;
+      middleName?: string;
+      lastName: string;
+      gender: string;
+      dob: string;
+    }>;
+    childrens: Array<{ // Updated here as well
+      type: string; // e.g., "children"
+      firstName: string;
+      middleName?: string;
+      lastName: string;
+      gender: string;
+      dob: string;
+    }>;
+    infants: Array<{
+      type: string; // e.g., "infants"
+      firstName: string;
+      middleName?: string;
+      lastName: string;
+      gender: string;
+      dob: string;
+    }>;
+  };
 
   @Prop({ type: Object, required: true })
   selectedFlight: {
-    flightNumber: string;
+    id: string;
+    type: string;
+    source: string;
+    instantTicketingRequired?: boolean;
+    nonHomogeneous?: boolean;
+    oneWay?: boolean;
+    isUpsellOffer?: boolean;
+    lastTicketingDate: string;
+    lastTicketingDateTime: string;
+    numberOfBookableSeats: number;
+    itineraries: Array<{
+      duration: string;
+      segments: Array<{
+        departure: {
+          iataCode: string;
+          terminal: string;
+          at: string;
+        };
+        arrival: {
+          iataCode: string;
+          terminal: string;
+          at: string;
+        };
+        carrierCode: string;
+        number: string;
+        aircraft: {
+          code: string;
+        };
+        operating: {
+          carrierCode: string;
+        };
+        duration: string;
+        id: string;
+        numberOfStops: number;
+      }>;
+    }>;
     price: {
       currency: string;
-      grandTotal: string;
+      total: string;
+      base: string;
     };
   };
 
@@ -57,7 +131,6 @@ export class Booking {
   };
 
   // New fields with default values
-
   @Prop({
     type: {
       employee: { type: Types.ObjectId, ref: 'Employee', default: null },
@@ -67,7 +140,7 @@ export class Booking {
   })
   status?: {
     employee: Types.ObjectId | null;
-    value: true | false;
+    value: boolean;
   };
 
   @Prop({ unique: true })
