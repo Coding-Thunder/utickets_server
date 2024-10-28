@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString, IsArray, IsOptional, IsDateString, ValidateNested, IsInt, Min, IsBoolean } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, IsArray, IsOptional, IsDateString, ValidateNested, IsInt, Min, IsBoolean, IsNumber } from 'class-validator';
 import { Type } from 'class-transformer';
 
 class ContactInfo {
@@ -44,6 +44,11 @@ class Price {
   @IsString()
   @IsNotEmpty()
   base: string;
+
+
+  @IsOptional()
+  @IsNumber()
+  discount:number
 }
 
 class Aircraft {

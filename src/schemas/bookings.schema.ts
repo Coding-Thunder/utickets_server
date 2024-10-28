@@ -109,11 +109,7 @@ export class Booking {
       currency: string;
       total: string;
       base: string;
-      discount?: { // Added discount field here
-        discount?: number;
-        price?: number;
-        discounted?: number;
-      };
+      discount?:number
     };
   };
 
