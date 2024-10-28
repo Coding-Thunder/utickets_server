@@ -110,18 +110,10 @@ export class AmadeusService {
           infants: params.infants,
           travelClass: travelClass,
           currencyCode: 'USD', // Ensure prices are in USD
+          includedAirlineCodes:'F9,NK,WN,B6'
         },
-      });
-  
-      // Filter flights based on allowed carrier codes
-      const allowedAirlines = ['F9', 'NK', 'WN', 'B6'];
-      const filteredFlights =  response.data.data.filter((flight: any) =>
-        flight.itineraries.some((itinerary: any) =>
-          itinerary.segments.some((segment: any) => allowedAirlines.includes(segment.carrierCode))
-        )
-      );
-  
-      return { ...response.data, data: filteredFlights };
+      })
+      return response.data
     } catch (error) {
       console.error('Error fetching flights:', error.response?.data || error.message);
       // If the access token is invalid, re-authenticate and retry the request
