@@ -30,6 +30,12 @@ export class BookingController {
         return newBooking; // Return only the new booking object
     }
 
+    @Get('discount')
+    async getDiscount(): Promise<any> {
+        const discount = await this.bookingService.getBookingDiscount();
+        return discount;
+    }
+
     @Get('by-email')
     async getBookingsByContactInfo(
         @Query('email') email: string,

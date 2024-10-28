@@ -103,5 +103,23 @@ export class BookingService {
             throw new InternalServerErrorException('An error occurred while assigning the employee to the booking.');
         }
     }
+    async getBookingDiscount(): Promise<any> {
+        try {
+            // Replace this with your actual logic to fetch the discount
+            // For example, you might fetch from a database or an external API
+            const discount = await this.fetchDiscountFromDatabase(); // Example method
+            return {discount};
+        } catch (error) {
+            // Log the error for debugging (optional)
+            console.error('Error fetching booking discount:', error);
 
+            // Throw an exception to inform the caller of the failure
+            throw new InternalServerErrorException('Failed to retrieve booking discount');
+        }
+    }
+
+    private async fetchDiscountFromDatabase(): Promise<number> {
+        // Simulate fetching the discount. Replace with actual implementation.
+        return 20; 
+    }
 }

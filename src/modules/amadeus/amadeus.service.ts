@@ -88,43 +88,50 @@ export class AmadeusService {
     if (!this.accessToken) {
       await this.authenticate();
     }
-
+  
     // Normalize travel class by replacing spaces with underscores and converting to uppercase
-    const travelClass = params.classType.toUpperCase().replace(/ /g, '_'); // Use regex to replace spaces with underscores
-
+    const travelClass = params.classType.toUpperCase().replace(/ /g, '_');
+  
     // Validate travel class
     const allowedClasses = ['ECONOMY', 'PREMIUM_ECONOMY', 'BUSINESS', 'FIRST'];
-
     if (!allowedClasses.includes(travelClass)) {
       console.error(`Invalid travel class: ${travelClass}. Allowed values are: ${allowedClasses.join(', ')}`);
       throw new InternalServerErrorException(`Invalid travel class: ${travelClass}. Allowed values are: ${allowedClasses.join(', ')}`);
     }
-
+  
     try {
       const response = await this.amadeusClient.get('/v2/shopping/flight-offers', {
         params: {
           originLocationCode: params.from,
           destinationLocationCode: params.to,
-          departureDate: params.date.split('T')[0], // Use only the date part in YYYY-MM-DD format
+          departureDate: params.date.split('T')[0],
           adults: params.adults,
           children: params.children,
           infants: params.infants,
-          travelClass: travelClass, // Use the validated travel class
+          travelClass: travelClass,
           currencyCode: 'USD', // Ensure prices are in USD
         },
       });
-
-      return response.data;
+  
+      // Filter flights based on allowed carrier codes
+      const allowedAirlines = ['F9', 'NK', 'WN', 'B6'];
+      const filteredFlights = response.data.data.filter((flight: any) =>
+        flight.itineraries.some((itinerary: any) =>
+          itinerary.segments.some((segment: any) => allowedAirlines.includes(segment.carrierCode))
+        )
+      );
+  
+      return { ...response.data, data: filteredFlights };
     } catch (error) {
       console.error('Error fetching flights:', error.response?.data || error.message);
       // If the access token is invalid, re-authenticate and retry the request
       if (error.response?.status === 401) {
-        this.accessToken = null; // Invalidate the token
-        await this.authenticate(); // Re-authenticate
-        return this.getFlights(params); // Retry the request
+        this.accessToken = null;
+        await this.authenticate();
+        return this.getFlights(params);
       }
       throw new InternalServerErrorException('Failed to fetch flights');
     }
   }
-
+  
 }

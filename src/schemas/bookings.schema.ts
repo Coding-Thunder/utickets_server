@@ -14,15 +14,15 @@ export class Booking {
   @Prop({
     type: {
       adults: [{
-        type: { type: String, required: true }, // Type field indicating the category of the traveler
+        type: { type: String, required: true },
         firstName: { type: String, required: true },
         middleName: { type: String, required: false },
         lastName: { type: String, required: true },
         gender: { type: String, required: true },
         dob: { type: String, required: true },
       }],
-      childrens: [{ // Changed from 'children' to 'childrens'
-        type: { type: String, required: true }, // e.g., "children"
+      childrens: [{
+        type: { type: String, required: true },
         firstName: { type: String, required: true },
         middleName: { type: String, required: false },
         lastName: { type: String, required: true },
@@ -30,7 +30,7 @@ export class Booking {
         dob: { type: String, required: true },
       }],
       infants: [{
-        type: { type: String, required: true }, // e.g., "infants"
+        type: { type: String, required: true },
         firstName: { type: String, required: true },
         middleName: { type: String, required: false },
         lastName: { type: String, required: true },
@@ -42,15 +42,15 @@ export class Booking {
   })
   travelers: {
     adults: Array<{
-      type: string; // e.g., "adults"
+      type: string;
       firstName: string;
       middleName?: string;
       lastName: string;
       gender: string;
       dob: string;
     }>;
-    childrens: Array<{ // Updated here as well
-      type: string; // e.g., "children"
+    childrens: Array<{
+      type: string;
       firstName: string;
       middleName?: string;
       lastName: string;
@@ -58,7 +58,7 @@ export class Booking {
       dob: string;
     }>;
     infants: Array<{
-      type: string; // e.g., "infants"
+      type: string;
       firstName: string;
       middleName?: string;
       lastName: string;
@@ -109,6 +109,11 @@ export class Booking {
       currency: string;
       total: string;
       base: string;
+      discount?: { // Added discount field here
+        discount?: number;
+        price?: number;
+        discounted?: number;
+      };
     };
   };
 
@@ -130,7 +135,6 @@ export class Booking {
     postalCode: string;
   };
 
-  // New fields with default values
   @Prop({
     type: {
       employee: { type: Types.ObjectId, ref: 'Employee', default: null },
@@ -146,7 +150,7 @@ export class Booking {
   @Prop({ unique: true })
   bookingId: string;
 
-  @Prop({ default: Date.now }) // Automatically set the date when created
+  @Prop({ default: Date.now }) 
   createdAt: Date;
 }
 
