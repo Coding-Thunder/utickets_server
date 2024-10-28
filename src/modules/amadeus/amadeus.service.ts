@@ -115,7 +115,7 @@ export class AmadeusService {
   
       // Filter flights based on allowed carrier codes
       const allowedAirlines = ['F9', 'NK', 'WN', 'B6'];
-      const filteredFlights = await response.data.data.filter((flight: any) =>
+      const filteredFlights =  response.data.data.filter((flight: any) =>
         flight.itineraries.some((itinerary: any) =>
           itinerary.segments.some((segment: any) => allowedAirlines.includes(segment.carrierCode))
         )
