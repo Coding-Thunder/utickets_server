@@ -12,7 +12,7 @@ export class AmadeusService {
     const baseURL = process.env.PRODUCTION_BASE_URL
 
 
-    
+
     // Initialize Axios instance
     this.amadeusClient = axios.create({
       baseURL,
@@ -78,7 +78,8 @@ export class AmadeusService {
   async getFlights(params: {
     from: string; // IATA code for origin
     to: string; // IATA code for destination
-    date: string; // Departure date in YYYY-MM-DD format
+    departureDate: string; // Departure date in YYYY-MM-DD format
+    returnDate: string; // Departure date in YYYY-MM-DD format
     adults: number; // Number of adults
     children: number; // Number of children
     infants: number; // Number of infants
@@ -88,34 +89,39 @@ export class AmadeusService {
     if (!this.accessToken) {
       await this.authenticate();
     }
-  
+
     // Normalize travel class by replacing spaces with underscores and converting to uppercase
     const travelClass = params.classType.toUpperCase().replace(/ /g, '_');
-  
+
     // Validate travel class
     const allowedClasses = ['ECONOMY', 'PREMIUM_ECONOMY', 'BUSINESS', 'FIRST'];
     if (!allowedClasses.includes(travelClass)) {
       console.error(`Invalid travel class: ${travelClass}. Allowed values are: ${allowedClasses.join(', ')}`);
       throw new InternalServerErrorException(`Invalid travel class: ${travelClass}. Allowed values are: ${allowedClasses.join(', ')}`);
     }
-  
+
+    const flightQuery = {
+      originLocationCode: params.from,
+      destinationLocationCode: params.to,
+      departureDate: params.departureDate.split('T')[0],
+      adults: params.adults,
+      children: params.children,
+      infants: params.infants,
+      travelClass: travelClass,
+      currencyCode: 'USD', // Ensure prices are in USD
+      includedAirlineCodes: 'F9,NK,WN,B6',
+    }
+
+    if (params.returnDate && params.returnDate !== '') {
+      flightQuery['returnDate'] = params.returnDate.split('T')[0]
+    }
+
     try {
       const response = await this.amadeusClient.get('/v2/shopping/flight-offers', {
-        params: {
-          originLocationCode: params.from,
-          destinationLocationCode: params.to,
-          departureDate: params.date.split('T')[0],
-          adults: params.adults,
-          children: params.children,
-          infants: params.infants,
-          travelClass: travelClass,
-          currencyCode: 'USD', // Ensure prices are in USD
-          includedAirlineCodes:'F9,NK,WN,B6'
-        },
+        params: flightQuery,
       })
       return response.data
     } catch (error) {
-      console.error('Error fetching flights:', error.response?.data || error.message);
       // If the access token is invalid, re-authenticate and retry the request
       if (error.response?.status === 401) {
         this.accessToken = null;
@@ -125,5 +131,5 @@ export class AmadeusService {
       throw new InternalServerErrorException('Failed to fetch flights');
     }
   }
-  
+
 }

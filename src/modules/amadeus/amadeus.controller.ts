@@ -28,7 +28,8 @@ export class AmadeusController {
   async getFlights(
     @Query('from') from: string,
     @Query('to') to: string,
-    @Query('date') date: string,
+    @Query('departureDate') departureDate: string,
+    @Query('returnDate') returnDate: string,
     @Query('adults') adults: string,
     @Query('children') children: string,
     @Query('infants') infants: string,
@@ -39,7 +40,8 @@ export class AmadeusController {
       const result = await this.amadeusService.getFlights({
         from,
         to,
-        date,
+        departureDate,
+        returnDate,
         adults: Number(adults),
         children: Number(children),
         infants: Number(infants),
