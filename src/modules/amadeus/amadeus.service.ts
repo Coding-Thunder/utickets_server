@@ -109,7 +109,7 @@ export class AmadeusService {
       infants: params.infants,
       travelClass: travelClass,
       currencyCode: 'USD', // Ensure prices are in USD
-      includedAirlineCodes: 'F9,NK,WN,B6',
+      // includedAirlineCodes: 'F9,NK,WN,B6',
     }
 
     if (params.returnDate && params.returnDate !== '') {
