@@ -8,10 +8,7 @@ export class AmadeusService {
   private accessToken: string | null = null;
 
   constructor(private configService: ConfigService) {
-
-    const baseURL = process.env.PRODUCTION_BASE_URL
-
-
+    const baseURL = process.env.PRODUCTION_BASE_URL;
 
     // Initialize Axios instance
     this.amadeusClient = axios.create({
@@ -27,7 +24,8 @@ export class AmadeusService {
       const clientId = this.configService.get<string>('CLIENT_ID');
       const clientSecret = this.configService.get<string>('CLIENT_SECRET');
 
-      const response = await axios.post('https://api.amadeus.com/v1/security/oauth2/token',
+      const response = await axios.post(
+        'https://api.amadeus.com/v1/security/oauth2/token',
         new URLSearchParams({
           grant_type: 'client_credentials',
           client_id: clientId,
@@ -37,14 +35,20 @@ export class AmadeusService {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
-        }
+        },
       );
 
       this.accessToken = response.data.access_token;
-      this.amadeusClient.defaults.headers['Authorization'] = `Bearer ${this.accessToken}`;
+      this.amadeusClient.defaults.headers['Authorization'] =
+        `Bearer ${this.accessToken}`;
     } catch (error) {
-      console.error('Error authenticating Amadeus API:', error.response?.data || error.message);
-      throw new InternalServerErrorException('Failed to authenticate with Amadeus API');
+      console.error(
+        'Error authenticating Amadeus API:',
+        error.response?.data || error.message,
+      );
+      throw new InternalServerErrorException(
+        'Failed to authenticate with Amadeus API',
+      );
     }
   }
 
@@ -55,17 +59,23 @@ export class AmadeusService {
     }
 
     try {
-      const response = await this.amadeusClient.get('/v1/reference-data/locations', {
-        params: {
-          keyword,
-          subType,
-          'page[offset]': page * 10,
+      const response = await this.amadeusClient.get(
+        '/v1/reference-data/locations',
+        {
+          params: {
+            keyword,
+            subType,
+            'page[offset]': page * 10,
+          },
         },
-      });
+      );
 
       return response.data;
     } catch (error) {
-      console.error('Error fetching airports:', error.response?.data || error.message);
+      console.error(
+        'Error fetching airports:',
+        error.response?.data || error.message,
+      );
       // If the access token is invalid, re-authenticate and retry the request
       if (error.response?.status === 401) {
         this.accessToken = null; // Invalidate the token
@@ -96,8 +106,12 @@ export class AmadeusService {
     // Validate travel class
     const allowedClasses = ['ECONOMY', 'PREMIUM_ECONOMY', 'BUSINESS', 'FIRST'];
     if (!allowedClasses.includes(travelClass)) {
-      console.error(`Invalid travel class: ${travelClass}. Allowed values are: ${allowedClasses.join(', ')}`);
-      throw new InternalServerErrorException(`Invalid travel class: ${travelClass}. Allowed values are: ${allowedClasses.join(', ')}`);
+      console.error(
+        `Invalid travel class: ${travelClass}. Allowed values are: ${allowedClasses.join(', ')}`,
+      );
+      throw new InternalServerErrorException(
+        `Invalid travel class: ${travelClass}. Allowed values are: ${allowedClasses.join(', ')}`,
+      );
     }
 
     const flightQuery = {
@@ -109,18 +123,21 @@ export class AmadeusService {
       infants: params.infants,
       travelClass: travelClass,
       currencyCode: 'USD', // Ensure prices are in USD
-      // includedAirlineCodes: 'F9,NK,WN,B6',
-    }
+      includedAirlineCodes: 'NK, DL, WN, UA, HA, AS, F9, B6, G4, AA',
+    };
 
     if (params.returnDate && params.returnDate !== '') {
-      flightQuery['returnDate'] = params.returnDate.split('T')[0]
+      flightQuery['returnDate'] = params.returnDate.split('T')[0];
     }
 
     try {
-      const response = await this.amadeusClient.get('/v2/shopping/flight-offers', {
-        params: flightQuery,
-      })
-      return response.data
+      const response = await this.amadeusClient.get(
+        '/v2/shopping/flight-offers',
+        {
+          params: flightQuery,
+        },
+      );
+      return response.data;
     } catch (error) {
       // If the access token is invalid, re-authenticate and retry the request
       if (error.response?.status === 401) {
@@ -131,5 +148,4 @@ export class AmadeusService {
       throw new InternalServerErrorException('Failed to fetch flights');
     }
   }
-
 }
