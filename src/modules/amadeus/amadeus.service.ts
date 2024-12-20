@@ -123,7 +123,7 @@ export class AmadeusService {
       infants: params.infants,
       travelClass: travelClass,
       currencyCode: 'USD', // Ensure prices are in USD
-      // includedAirlineCodes: 'NK, DL, WN, UA, HA, AS, F9, B6, G4, AA',
+      // includedAirlineCodes: ["NK", "DL", "WN", "UA", "HA", "AS", "F9", "B6", "G4", "AA"]
     };
 
     if (params.returnDate && params.returnDate !== '') {
@@ -137,7 +137,18 @@ export class AmadeusService {
           params: flightQuery,
         },
       );
-      return response.data;
+      const flightOffers = response.data;
+
+      // List of allowed airline codes
+      const allowedAirlineCodes = ["NK", "DL", "WN", "UA", "HA", "AS", "F9", "B6", "G4", "AA"];
+    
+      // Filter flight offers based on allowed airlines
+      const filteredOffers = flightOffers.data.filter((offer) =>
+        offer.validatingAirlineCodes.some((code:string) => allowedAirlineCodes.includes(code))
+      );
+    
+      // Return filtered flight offers
+      return filteredOffers;
     } catch (error) {
       // If the access token is invalid, re-authenticate and retry the request
       if (error.response?.status === 401) {
