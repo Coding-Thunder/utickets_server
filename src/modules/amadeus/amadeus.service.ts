@@ -148,7 +148,7 @@ export class AmadeusService {
       );
     
       // Return filtered flight offers
-      return filteredOffers;
+      return {...response.data,data:filteredOffers} ;
     } catch (error) {
       // If the access token is invalid, re-authenticate and retry the request
       if (error.response?.status === 401) {
