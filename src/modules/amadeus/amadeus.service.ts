@@ -137,18 +137,18 @@ export class AmadeusService {
           params: flightQuery,
         },
       );
-      const flightOffers = response.data;
+      // const flightOffers = response.data;
 
       // List of allowed airline codes
-      const allowedAirlineCodes = ["NK", "DL", "WN", "UA", "HA", "AS", "F9", "B6", "G4", "AA"];
+      // const allowedAirlineCodes = ["NK", "DL", "WN", "UA", "HA", "AS", "F9", "B6", "G4", "AA"];
     
       // Filter flight offers based on allowed airlines
-      const filteredOffers = flightOffers.data.filter((offer) =>
-        offer.validatingAirlineCodes.some((code:string) => allowedAirlineCodes.includes(code))
-      );
+      // const filteredOffers = flightOffers.data.filter((offer) =>
+      //   offer.validatingAirlineCodes.some((code:string) => allowedAirlineCodes.includes(code))
+      // );
     
       // Return filtered flight offers
-      return {...response.data,data:filteredOffers} ;
+      return  response.data;
     } catch (error) {
       // If the access token is invalid, re-authenticate and retry the request
       if (error.response?.status === 401) {
