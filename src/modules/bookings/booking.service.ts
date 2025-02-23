@@ -120,6 +120,6 @@ export class BookingService {
 
     private async fetchDiscountFromDatabase(): Promise<number> {
         // Simulate fetching the discount. Replace with actual implementation.
-        return 25; 
+        return 0; 
     }
 }
