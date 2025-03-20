@@ -98,7 +98,7 @@ export const sendOtpEmail = async (email: string, otp: string, code: string) => 
 };
 
 
-export const sentTransactionalMail = async (bookingId, email) => {
+export const sentTransactionalMail = async (bookingId: string, email: string) => {
     const mailOptions = {
         from: 'Universal Ticketss <contact@universalticketss.com>', // Sender name and address
         to: email, // Recipient's email address
@@ -178,6 +178,6 @@ export const sentTransactionalMail = async (bookingId, email) => {
     try {
         await transporter.sendMail(mailOptions);
     } catch (error) {
-        throw new Error('Failed to send booking confirmation email');
+        console.log(error)
     }
 };
