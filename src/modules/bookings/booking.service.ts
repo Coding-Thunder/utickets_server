@@ -33,12 +33,12 @@ export class BookingService {
     
             await newBooking.save();
             // Send a transactional email with booking confirmation
-            try {
-                await sentTransactionalMail(newBooking.bookingId, newBooking.contactInfo.email);
-            } catch (emailError) {
-                console.error('Failed to send booking confirmation email:', emailError);
-                // Optionally, handle email failure (e.g., retry, notify admin)
-            }
+            // try {
+            //     await sentTransactionalMail(newBooking.bookingId, newBooking.contactInfo.email);
+            // } catch (emailError) {
+            //     console.error('Failed to send booking confirmation email:', emailError);
+            //     // Optionally, handle email failure (e.g., retry, notify admin)
+            // }
     
             return newBooking;
         } catch (error) {
