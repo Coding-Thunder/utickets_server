@@ -8,8 +8,8 @@ async function bootstrap() {
     origin: [
       'http://localhost:3000', // Add your frontend origin
       'http://localhost:3001', // Add your frontend origin
-      'https://flightbizz.com', // Allow production origin
-      'https://crm.flightbizz.com', // Allow production origin
+      'https://universalticketss.com', // Allow production origin
+      'https://crm.universalticketss.com', // Allow production origin
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
