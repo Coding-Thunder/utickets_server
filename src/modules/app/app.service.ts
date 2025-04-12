@@ -1,4 +1,4 @@
-import { Injectable, Response } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import rootResponse from 'src/utils/response/root';
 
 @Injectable()
