@@ -1,10 +1,10 @@
-import { Controller, Get, Query, Res } from '@nestjs/common';
+import { Body, Controller, Get, InternalServerErrorException, Post, Query, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { AmadeusService } from './amadeus.service';
 
 @Controller('amadeus')
 export class AmadeusController {
-  constructor(private readonly amadeusService: AmadeusService) {}
+  constructor(private readonly amadeusService: AmadeusService) { }
 
   @Get('airports')
   async getAirports(
@@ -23,6 +23,25 @@ export class AmadeusController {
     } catch (err) {
       res.status(500).json(err);
     }
+  }
+
+
+  @Post('transfer-offers')
+  async getTransferOffers() {
+    try {
+      return await this.amadeusService.getTransferOffers();
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerErrorException('Unable to fetch transfer offers');
+    }
+  }
+
+  @Get("/locations")
+  async getCities(
+    // @Query('countryCode') countryCode: string,
+    @Query('keyword') keyword: string,
+  ) {
+    return this.amadeusService.getLocations(keyword);
   }
   @Get('search-flights') // Update route if needed
   async getFlights(

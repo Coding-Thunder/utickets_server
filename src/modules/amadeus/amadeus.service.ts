@@ -52,6 +52,317 @@ export class AmadeusService {
     }
   }
 
+  async getTransferOffers() {
+    if (!this.accessToken) {
+      await this.authenticate();
+    }
+    const prefillArray = [
+      {
+        startLocationCode: "JFK",
+        endAddressLine: "Liberty Island",
+        endCityName: "New York",
+        endZipCode: "10004",
+        endCountryCode: "US",
+        endName: "Statue of Liberty",
+        endGeoCode: "40.6892,-74.0445",
+        transferType: "PRIVATE",
+        startDateTime: "2025-09-04T12:00:00",
+        passengers: 2,
+      },
+      {
+        startLocationCode: "LAX",
+        endAddressLine: "Hollywood Blvd",
+        endCityName: "Los Angeles",
+        endZipCode: "90028",
+        endCountryCode: "US",
+        endName: "Hollywood Walk of Fame",
+        endGeoCode: "34.1016,-118.3269",
+        transferType: "PRIVATE",
+        startDateTime: "2025-09-05T09:30:00",
+        passengers: 3,
+      },
+      {
+        startLocationCode: "ORD",
+        endAddressLine: "Millennium Park",
+        endCityName: "Chicago",
+        endZipCode: "60601",
+        endCountryCode: "US",
+        endName: "Cloud Gate",
+        endGeoCode: "41.8826,-87.6226",
+        transferType: "PRIVATE",
+        startDateTime: "2025-09-06T14:00:00",
+        passengers: 1,
+      },
+      {
+        startLocationCode: "SFO",
+        endAddressLine: "Golden Gate Bridge",
+        endCityName: "San Francisco",
+        endZipCode: "94129",
+        endCountryCode: "US",
+        endName: "Golden Gate Bridge",
+        endGeoCode: "37.8199,-122.4783",
+        transferType: "PRIVATE",
+        startDateTime: "2025-09-07T11:45:00",
+        passengers: 4,
+      },
+      {
+        startLocationCode: "MIA",
+        endAddressLine: "Ocean Drive",
+        endCityName: "Miami",
+        endZipCode: "33139",
+        endCountryCode: "US",
+        endName: "South Beach",
+        endGeoCode: "25.7820,-80.1340",
+        transferType: "PRIVATE",
+        startDateTime: "2025-09-08T16:30:00",
+        passengers: 2,
+      },
+      {
+        startLocationCode: "BOS",
+        endAddressLine: "Freedom Trail",
+        endCityName: "Boston",
+        endZipCode: "02108",
+        endCountryCode: "US",
+        endName: "Boston Common",
+        endGeoCode: "42.3551,-71.0656",
+        transferType: "PRIVATE",
+        startDateTime: "2025-09-09T10:15:00",
+        passengers: 1,
+      },
+      {
+        startLocationCode: "SEA",
+        endAddressLine: "Pike Place Market",
+        endCityName: "Seattle",
+        endZipCode: "98101",
+        endCountryCode: "US",
+        endName: "Seattle Aquarium",
+        endGeoCode: "47.6097,-122.3425",
+        transferType: "PRIVATE",
+        startDateTime: "2025-09-10T12:00:00",
+        passengers: 2,
+      },
+      {
+        startLocationCode: "ATL",
+        endAddressLine: "World of Coca-Cola",
+        endCityName: "Atlanta",
+        endZipCode: "30313",
+        endCountryCode: "US",
+        endName: "Georgia Aquarium",
+        endGeoCode: "33.7627,-84.3950",
+        transferType: "PRIVATE",
+        startDateTime: "2025-09-11T15:45:00",
+        passengers: 3,
+      },
+      {
+        startLocationCode: "PHX",
+        endAddressLine: "Desert Botanical Garden",
+        endCityName: "Phoenix",
+        endZipCode: "85008",
+        endCountryCode: "US",
+        endName: "Papago Park",
+        endGeoCode: "33.4625,-111.9461",
+        transferType: "PRIVATE",
+        startDateTime: "2025-09-12T09:00:00",
+        passengers: 1,
+      },
+      {
+        startLocationCode: "DEN",
+        endAddressLine: "Red Rocks Amphitheatre",
+        endCityName: "Denver",
+        endZipCode: "80216",
+        endCountryCode: "US",
+        endName: "Denver Botanic Gardens",
+        endGeoCode: "39.6654,-105.2057",
+        transferType: "PRIVATE",
+        startDateTime: "2025-09-13T11:30:00",
+        passengers: 2,
+      },
+      {
+        startLocationCode: "LAS",
+        endAddressLine: "The Strip",
+        endCityName: "Las Vegas",
+        endZipCode: "89109",
+        endCountryCode: "US",
+        endName: "Bellagio Fountains",
+        endGeoCode: "36.1126,-115.1767",
+        transferType: "PRIVATE",
+        startDateTime: "2025-09-14T20:00:00",
+        passengers: 4,
+      },
+      {
+        startLocationCode: "PHL",
+        endAddressLine: "Independence Hall",
+        endCityName: "Philadelphia",
+        endZipCode: "19106",
+        endCountryCode: "US",
+        endName: "Liberty Bell",
+        endGeoCode: "39.9489,-75.1500",
+        transferType: "PRIVATE",
+        startDateTime: "2025-09-15T13:00:00",
+        passengers: 2,
+      },
+      {
+        startLocationCode: "DC",
+        endAddressLine: "National Mall",
+        endCityName: "Washington",
+        endZipCode: "20004",
+        endCountryCode: "US",
+        endName: "Lincoln Memorial",
+        endGeoCode: "38.8893,-77.0502",
+        transferType: "PRIVATE",
+        startDateTime: "2025-09-16T14:30:00",
+        passengers: 3,
+      },
+      {
+        startLocationCode: "SD",
+        endAddressLine: "Gaslamp Quarter",
+        endCityName: "San Diego",
+        endZipCode: "92101",
+        endCountryCode: "US",
+        endName: "Balboa Park",
+        endGeoCode: "32.7341,-117.1446",
+        transferType: "PRIVATE",
+        startDateTime: "2025-09-17T10:45:00",
+        passengers: 1,
+      },
+      {
+        startLocationCode: "AUS",
+        endAddressLine: "Zilker Park",
+        endCityName: "Austin",
+        endZipCode: "78704",
+        endCountryCode: "US",
+        endName: "State Capitol",
+        endGeoCode: "30.2747,-97.7404",
+        transferType: "PRIVATE",
+        startDateTime: "2025-09-18T09:15:00",
+        passengers: 2,
+      },
+      {
+        startLocationCode: "NOLA",
+        endAddressLine: "French Quarter",
+        endCityName: "New Orleans",
+        endZipCode: "70116",
+        endCountryCode: "US",
+        endName: "Jackson Square",
+        endGeoCode: "29.9574,-90.0622",
+        transferType: "PRIVATE",
+        startDateTime: "2025-09-19T16:00:00",
+        passengers: 3,
+      },
+      {
+        startLocationCode: "SEA",
+        endAddressLine: "Space Needle",
+        endCityName: "Seattle",
+        endZipCode: "98109",
+        endCountryCode: "US",
+        endName: "Chihuly Garden and Glass",
+        endGeoCode: "47.6205,-122.3493",
+        transferType: "PRIVATE",
+        startDateTime: "2025-09-20T12:15:00",
+        passengers: 2,
+      },
+      {
+        startLocationCode: "MCO",
+        endAddressLine: "Disney Springs",
+        endCityName: "Orlando",
+        endZipCode: "32830",
+        endCountryCode: "US",
+        endName: "Magic Kingdom",
+        endGeoCode: "28.4177,-81.5812",
+        transferType: "PRIVATE",
+        startDateTime: "2025-09-21T11:00:00",
+        passengers: 4,
+      },
+      {
+        startLocationCode: "CLT",
+        endAddressLine: "NASCAR Hall of Fame",
+        endCityName: "Charlotte",
+        endZipCode: "28202",
+        endCountryCode: "US",
+        endName: "Bank of America Stadium",
+        endGeoCode: "35.2251,-80.8431",
+        transferType: "PRIVATE",
+        startDateTime: "2025-09-22T14:45:00",
+        passengers: 2,
+      },
+      {
+        startLocationCode: "BNA",
+        endAddressLine: "Broadway Street",
+        endCityName: "Nashville",
+        endZipCode: "37203",
+        endCountryCode: "US",
+        endName: "Ryman Auditorium",
+        endGeoCode: "36.1627,-86.7816",
+        transferType: "PRIVATE",
+        startDateTime: "2025-09-23T17:30:00",
+        passengers: 3,
+      },
+    ];
+
+    const payload = prefillArray[Math.floor(Math.random() * prefillArray.length)];
+    console.log(payload)
+
+    try {
+      if (payload.startDateTime?.endsWith('Z')) {
+        payload.startDateTime = payload.startDateTime.replace('Z', '');
+      }
+
+      const response = await this.amadeusClient.post(
+        '/v1/shopping/transfer-offers?max=20',
+        payload,
+        {
+          headers: {
+            'Content-Type': 'application/json', // override here!
+          },
+        },
+      );
+
+      return response.data;
+    } catch (error) {
+      console.error(
+        'Error fetching transfer offers:',
+        error.response?.data || error.message,
+      );
+
+      if (error.response?.status === 401) {
+        this.accessToken = null;
+        await this.authenticate();
+        return this.getTransferOffers();
+      }
+
+      throw new InternalServerErrorException('Failed to fetch transfer offers');
+    }
+  }
+
+
+  async getLocations(keyword: string) {
+    if (!this.accessToken) {
+      await this.authenticate();
+    }
+    try {
+      const response = await this.amadeusClient.get('/v1/reference-data/locations/cities', {
+        params: {
+          keyword,
+          max: 10,
+          // include: 'AIRPORTS',
+        },
+      });
+
+      console.log(response)
+
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching locations:', error.response?.data || error.message);
+      if (error.response?.status === 401) {
+        this.accessToken = null;
+        await this.authenticate();
+        return this.getLocations(keyword);
+      }
+      throw new InternalServerErrorException('Failed to fetch locations');
+    }
+  }
+
+
   async getAirports(page: number, subType: string, keyword: string) {
     // Ensure access token is available
     if (!this.accessToken) {
@@ -141,14 +452,14 @@ export class AmadeusService {
 
       // List of allowed airline codes
       // const allowedAirlineCodes = ["NK", "DL", "WN", "UA", "HA", "AS", "F9", "B6", "G4", "AA"];
-    
+
       // Filter flight offers based on allowed airlines
       // const filteredOffers = flightOffers.data.filter((offer) =>
       //   offer.validatingAirlineCodes.some((code:string) => allowedAirlineCodes.includes(code))
       // );
-    
+
       // Return filtered flight offers
-      return  response.data;
+      return response.data;
     } catch (error) {
       // If the access token is invalid, re-authenticate and retry the request
       if (error.response?.status === 401) {

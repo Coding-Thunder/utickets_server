@@ -6,18 +6,20 @@ import {
     Query,
     Param,
     Patch,
+    HttpException,
+    HttpStatus,
 } from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { CreateBookingDto, PaginateDto } from './booking.dto';
-import { Booking, BookingDocument } from 'src/schemas/bookings.schema';
-import { BookingGateway } from './booking.gateway'; // Import your BookingGateway
+import { Booking } from 'src/schemas/bookings.schema';
 import { Types } from 'mongoose';
+import { CarBookingService } from './carbooking.service';
 
 @Controller('booking')
 export class BookingController {
     constructor(
         private readonly bookingService: BookingService,
-        private readonly bookingGateway: BookingGateway // Inject the BookingGateway
+        private readonly carBookiingService: CarBookingService // Inject the BookingGateway
     ) { }
 
     @Post()
@@ -30,6 +32,23 @@ export class BookingController {
         return newBooking; // Return only the new booking object
     }
 
+    @Post('car')
+    async bookCar(@Body() bookingDetails: any) {
+        // Basic validation
+        if (!bookingDetails.contactInfo || !bookingDetails.selectedCar || !bookingDetails.cardInfo || !bookingDetails.billingInfo) {
+            throw new HttpException('Missing required booking details', HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            const booking = await this.carBookiingService.createCarBooking(bookingDetails);
+            return {
+                message: 'Car booking created successfully',
+                booking,
+            };
+        } catch (error) {
+            throw new HttpException('Failed to create booking', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @Get('discount')
     async getDiscount(): Promise<any> {
         const discount = await this.bookingService.getBookingDiscount();
