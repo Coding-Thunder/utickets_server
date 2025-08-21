@@ -183,3 +183,76 @@ export const sentTransactionalMail = async (bookingId: string, email: string) =>
         console.log(error)
     }
 };
+export const sendCarBookingMail = async (
+    bookingId: string,
+    email: string,
+    selectedCar: any,
+    searchCriteria: any
+) => {
+    const pickupDate = new Date(searchCriteria.time);
+    const formattedPickupDate = pickupDate.toLocaleDateString('en-US', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    });
+    const formattedPickupTime = pickupDate.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+    });
+
+    const mailOptions = {
+        from: 'Universal Ticketss <support@universalticketss.com>',
+        to: email,
+        subject: 'Car Booking Successful - Universal Ticketss',
+        html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Car Booking Confirmation</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f4f4f4; }
+    .container { width:100%; max-width:600px; margin:20px auto; background:#fff; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.1);}
+    .header { background:#007BFF; color:#fff; padding:20px; text-align:center; border-radius:8px 8px 0 0;}
+    .content { padding:20px; }
+    .footer { text-align:center; padding:10px; background:#f4f4f4; border-radius:0 0 8px 8px; font-size:12px; color:#888;}
+    .booking-id, .car-info { font-size:20px; font-weight:bold; color:#007BFF; margin:8px 0; }
+    .details { margin:8px 0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header"><h1>Car Booking Confirmed</h1></div>
+    <div class="content">
+      <p>Dear Customer,</p>
+      <p>Your car booking ID is:</p>
+      <p class="booking-id">${bookingId}</p>
+      <p class="car-info">Car Details:</p>
+      <div class="details">
+        <p>${selectedCar.vehicle.description.includes(",") && selectedCar.vehicle.description.split(",")[1]}</p>
+        <p>Pickup: ${formattedPickupDate}, ${formattedPickupTime} (${searchCriteria.startLocationCode})</p>
+        <p>Dropoff: ${searchCriteria.endName}</p>
+        <p>Total Price: USD ${selectedCar.quotation.monetaryAmount}</p>
+      </div>
+      <p>For any queries, contact us at:</p>
+      <p>Email: contact@universalticketss.com</p>
+      <p>Phone: +18609464369</p>
+      <p>Safe travels!</p>
+    </div>
+    <div class="footer">
+      <p>Best regards,</p>
+      <p>The Universal Tickets Team</p>
+      <p><a href="https://universalticketss.com" style="color:#007BFF;">Visit our website</a></p>
+    </div>
+  </div>
+</body>
+</html>`
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+    } catch (error) {
+        console.error('Failed to send car booking email:', error);
+    }
+};
