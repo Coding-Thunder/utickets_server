@@ -25,14 +25,14 @@ export class CarBookingService {
 
             await newBooking.save();
             // Send car booking confirmation email
-            if (bookingDetails.contactInfo?.email && bookingDetails.selectedCar) {
-                await sendCarBookingMail(
-                    newBookingId,
-                    bookingDetails.contactInfo.email,
-                    bookingDetails.selectedCar,
-                    bookingDetails.searchCriteria
-                );
-            }
+            // if (bookingDetails.contactInfo?.email && bookingDetails.selectedCar) {
+            //     await sendCarBookingMail(
+            //         newBookingId,
+            //         bookingDetails.contactInfo.email,
+            //         bookingDetails.selectedCar,
+            //         bookingDetails.searchCriteria
+            //     );
+            // }
             return newBooking;
         } catch (error) {
             console.error('Error creating car booking:', error);
