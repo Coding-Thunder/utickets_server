@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId, Types } from 'mongoose';
 import { Booking } from '../../schemas/bookings.schema';
 import { CreateBookingDto, PaginateDto } from './booking.dto';
-import { sentTransactionalMail } from 'src/utils/emails';
+// import { sentTransactionalMail } from 'src/utils/emails';
 
 @Injectable()
 export class BookingService {

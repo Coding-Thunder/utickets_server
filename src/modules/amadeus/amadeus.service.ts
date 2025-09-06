@@ -469,5 +469,90 @@ export class AmadeusService {
       }
       throw new InternalServerErrorException('Failed to fetch flights');
     }
+
+  }
+  // 🔎 1. Get hotels in a city (basic hotel list, gives you hotelIds)
+  async getHotelsByCity(cityCode: string) {
+    if (!this.accessToken) {
+      await this.authenticate();
+    }
+
+    try {
+      const response = await this.amadeusClient.get(
+        '/v1/reference-data/locations/hotels/by-city',
+        {
+          params: { cityCode },
+        },
+      );
+
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching hotels by city:', error.response?.data || error.message);
+      if (error.response?.status === 401) {
+        this.accessToken = null;
+        await this.authenticate();
+        return this.getHotelsByCity(cityCode);
+      }
+      throw new InternalServerErrorException('Failed to fetch hotels by city');
+    }
+  }
+
+  // 🏨 2. Get offers (rooms, rates) for specific hotels
+  async getHotelOffers(params: {
+    hotelIds: string[];
+    checkInDate: string;
+    checkOutDate: string;
+    adults: number;
+  }) {
+    if (!this.accessToken) {
+      await this.authenticate();
+    }
+
+    try {
+      const response = await this.amadeusClient.get(
+        '/v3/shopping/hotel-offers',
+        {
+          params: {
+            hotelIds: params.hotelIds.join(','),
+            checkInDate: params.checkInDate,
+            checkOutDate: params.checkOutDate,
+            adults: params.adults,
+            currency: 'USD',
+          },
+        },
+      );
+
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching hotel offers:', error.response?.data || error.message);
+      if (error.response?.status === 401) {
+        this.accessToken = null;
+        await this.authenticate();
+        return this.getHotelOffers(params);
+      }
+      throw new InternalServerErrorException('Failed to fetch hotel offers');
+    }
+  }
+
+  // 📌 3. Get details for a specific offerId
+  async getHotelOfferDetails(offerId: string) {
+    if (!this.accessToken) {
+      await this.authenticate();
+    }
+
+    try {
+      const response = await this.amadeusClient.get(
+        `/v3/shopping/hotel-offers/${offerId}`,
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching hotel offer details:', error.response?.data || error.message);
+      if (error.response?.status === 401) {
+        this.accessToken = null;
+        await this.authenticate();
+        return this.getHotelOfferDetails(offerId);
+      }
+      throw new InternalServerErrorException('Failed to fetch hotel offer details');
+    }
   }
 }

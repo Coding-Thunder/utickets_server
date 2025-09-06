@@ -14,12 +14,14 @@ import { CreateBookingDto, PaginateDto } from './booking.dto';
 import { Booking } from 'src/schemas/bookings.schema';
 import { Types } from 'mongoose';
 import { CarBookingService } from './carbooking.service';
+import { HotelBookingService } from './hotel.service';
 
 @Controller('booking')
 export class BookingController {
     constructor(
         private readonly bookingService: BookingService,
-        private readonly carBookiingService: CarBookingService // Inject the BookingGateway
+        private readonly carBookiingService: CarBookingService,  // Inject the BookingGateway
+        private readonly hotelBookiingService: HotelBookingService // Inject the BookingGateway
     ) { }
 
     @Post()
@@ -30,6 +32,19 @@ export class BookingController {
         // this.bookingGateway.notifyNewBooking(newBooking as BookingDocument);
 
         return newBooking; // Return only the new booking object
+    }
+
+    @Post('hotel')
+    async bookHotel(@Body() bookingDetails: any) {
+        if (!bookingDetails.contactInfo || !bookingDetails.selectedOffer || !bookingDetails.cardInfo || !bookingDetails.billingInfo) {
+            throw new HttpException('Missing required hotel booking details', HttpStatus.BAD_REQUEST);
+        }
+        try {
+            const booking = await this.hotelBookiingService.createBooking(bookingDetails);
+            return { message: 'Hotel booking created successfully', booking };
+        } catch (error) {
+            throw new HttpException('Failed to create hotel booking', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Post('car')
