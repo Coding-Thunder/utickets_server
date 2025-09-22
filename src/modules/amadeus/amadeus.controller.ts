@@ -27,15 +27,15 @@ export class AmadeusController {
 
 
   @Post('transfer-offers')
-  async getTransferOffers() {
+  async getTransferOffers(@Body() payload?: string) {
     try {
-      return await this.amadeusService.getTransferOffers();
+      // If frontend doesn't send a payload, service will pick a random one
+      return await this.amadeusService.getTransferOffers(payload);
     } catch (error) {
       console.error(error);
       throw new InternalServerErrorException('Unable to fetch transfer offers');
     }
   }
-
   @Get("/locations")
   async getCities(
     // @Query('countryCode') countryCode: string,
