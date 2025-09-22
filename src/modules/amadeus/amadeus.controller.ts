@@ -67,7 +67,7 @@ export class AmadeusController {
       });
       res.json(result);
     } catch (err) {
-      console.error('Error fetching flights:', err); // Log the error
+      // console.error('Error fetching flights:', err); // Log the error
       res.status(500).json({ message: 'Failed to fetch flights', error: err.message });
     }
   }

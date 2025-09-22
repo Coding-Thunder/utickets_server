@@ -35,7 +35,7 @@ export class CarBookingService {
             // }
             return newBooking;
         } catch (error) {
-            console.error('Error creating car booking:', error);
+            // console.error('Error creating car booking:', error);
             throw new InternalServerErrorException('Failed to create booking');
         }
     }

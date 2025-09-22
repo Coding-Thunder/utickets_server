@@ -36,7 +36,7 @@ export class BookingService {
             // try {
             //     await sentTransactionalMail(newBooking.bookingId, newBooking.contactInfo.email);
             // } catch (emailError) {
-            //     console.error('Failed to send booking confirmation email:', emailError);
+            //     // console.error('Failed to send booking confirmation email:', emailError);
             //     // Optionally, handle email failure (e.g., retry, notify admin)
             // }
     
@@ -111,7 +111,7 @@ export class BookingService {
             return {discount};
         } catch (error) {
             // Log the error for debugging (optional)
-            console.error('Error fetching booking discount:', error);
+            // console.error('Error fetching booking discount:', error);
 
             // Throw an exception to inform the caller of the failure
             throw new InternalServerErrorException('Failed to retrieve booking discount');

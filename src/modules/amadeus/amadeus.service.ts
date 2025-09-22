@@ -42,10 +42,10 @@ export class AmadeusService {
       this.amadeusClient.defaults.headers['Authorization'] =
         `Bearer ${this.accessToken}`;
     } catch (error) {
-      console.error(
-        'Error authenticating Amadeus API:',
-        error.response?.data || error.message,
-      );
+      // // console.error(
+      // 'Error authenticating Amadeus API:',
+      //   error.response?.data || error.message,
+      // );
       throw new InternalServerErrorException(
         'Failed to authenticate with Amadeus API',
       );
@@ -124,7 +124,7 @@ export class AmadeusService {
 
       return response.data;
     } catch (error: any) {
-      console.error('Error fetching transfer offers:', error.response?.data || error.message);
+      // console.error('Error fetching transfer offers:', error.response?.data || error.message);
 
       if (error.response?.status === 401) {
         this.accessToken = null;
@@ -150,11 +150,11 @@ export class AmadeusService {
         },
       });
 
-      // console.log(response)
+      // // console.log(response)
 
       return response.data;
     } catch (error) {
-      console.error('Error fetching locations:', error.response?.data || error.message);
+      // console.error('Error fetching locations:', error.response?.data || error.message);
       if (error.response?.status === 401) {
         this.accessToken = null;
         await this.authenticate();
@@ -185,10 +185,10 @@ export class AmadeusService {
 
       return response.data;
     } catch (error) {
-      console.error(
-        'Error fetching airports:',
-        error.response?.data || error.message,
-      );
+      // // console.error(
+      //   'Error fetching airports:',
+      //   error.response?.data || error.message,
+      // );
       // If the access token is invalid, re-authenticate and retry the request
       if (error.response?.status === 401) {
         this.accessToken = null; // Invalidate the token
@@ -219,9 +219,9 @@ export class AmadeusService {
     // Validate travel class
     const allowedClasses = ['ECONOMY', 'PREMIUM_ECONOMY', 'BUSINESS', 'FIRST'];
     if (!allowedClasses.includes(travelClass)) {
-      console.error(
-        `Invalid travel class: ${travelClass}. Allowed values are: ${allowedClasses.join(', ')}`,
-      );
+      // // console.error(
+      //   `Invalid travel class: ${travelClass}. Allowed values are: ${allowedClasses.join(', ')}`,
+      // );
       throw new InternalServerErrorException(
         `Invalid travel class: ${travelClass}. Allowed values are: ${allowedClasses.join(', ')}`,
       );
@@ -289,7 +289,7 @@ export class AmadeusService {
 
       return response.data;
     } catch (error) {
-      console.error('Error fetching hotels by city:', error.response?.data || error.message);
+      // console.error('Error fetching hotels by city:', error.response?.data || error.message);
       if (error.response?.status === 401) {
         this.accessToken = null;
         await this.authenticate();
@@ -326,7 +326,7 @@ export class AmadeusService {
 
       return response.data;
     } catch (error) {
-      console.error('Error fetching hotel offers:', error.response?.data || error.message);
+      // console.error('Error fetching hotel offers:', error.response?.data || error.message);
       if (error.response?.status === 401) {
         this.accessToken = null;
         await this.authenticate();
@@ -348,7 +348,7 @@ export class AmadeusService {
       );
       return response.data;
     } catch (error) {
-      console.error('Error fetching hotel offer details:', error.response?.data || error.message);
+      // console.error('Error fetching hotel offer details:', error.response?.data || error.message);
       if (error.response?.status === 401) {
         this.accessToken = null;
         await this.authenticate();

@@ -36,7 +36,7 @@ export class HotelBookingService {
 
             return newBooking;
         } catch (error) {
-            console.error(error);
+            // console.error(error);
             throw new InternalServerErrorException('An error occurred while creating the hotel booking.');
         }
     }
@@ -51,7 +51,7 @@ export class HotelBookingService {
                 .exec();
             return bookings;
         } catch (error) {
-            console.error(error);
+            // console.error(error);
             throw new InternalServerErrorException('An error occurred while fetching hotel bookings.');
         }
     }
@@ -65,7 +65,7 @@ export class HotelBookingService {
                 .exec();
             return bookings;
         } catch (error) {
-            console.error(error);
+            // console.error(error);
             throw new InternalServerErrorException('An error occurred while fetching all hotel bookings.');
         }
     }
@@ -77,7 +77,7 @@ export class HotelBookingService {
             if (!booking) throw new NotFoundException(`Hotel booking with ID ${id} not found`);
             return booking;
         } catch (error) {
-            console.error(error);
+            // console.error(error);
             throw new InternalServerErrorException('An error occurred while fetching the hotel booking.');
         }
     }
@@ -94,7 +94,7 @@ export class HotelBookingService {
 
             return booking;
         } catch (error) {
-            console.error(error);
+            // console.error(error);
             throw new InternalServerErrorException('An error occurred while assigning the employee to the hotel booking.');
         }
     }
@@ -105,7 +105,7 @@ export class HotelBookingService {
             const discount = await this.fetchDiscountFromDatabase();
             return { discount };
         } catch (error) {
-            console.error('Error fetching hotel booking discount:', error);
+            // console.error('Error fetching hotel booking discount:', error);
             throw new InternalServerErrorException('Failed to retrieve hotel booking discount');
         }
     }
