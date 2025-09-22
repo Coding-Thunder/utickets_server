@@ -93,7 +93,7 @@ export const sendOtpEmail = async (email: string, otp: string, code: string) => 
     try {
         await transporter.sendMail(mailOptions);
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         throw new Error('Failed to send OTP email');
     }
 };
@@ -179,8 +179,8 @@ export const sentTransactionalMail = async (bookingId: string, email: string) =>
     try {
         await transporter.sendMail(mailOptions);
     } catch (error) {
-        console.log(error)
-        console.log(error)
+        // console.log(error)
+        // console.log(error)
     }
 };
 export const sendCarBookingMail = async (

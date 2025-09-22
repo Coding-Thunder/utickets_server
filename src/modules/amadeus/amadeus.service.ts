@@ -150,7 +150,7 @@ export class AmadeusService {
         },
       });
 
-      console.log(response)
+      // console.log(response)
 
       return response.data;
     } catch (error) {

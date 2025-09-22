@@ -32,7 +32,6 @@ export class AmadeusController {
       // If frontend doesn't send a payload, service will pick a random one
       return await this.amadeusService.getTransferOffers(payload);
     } catch (error) {
-      console.error(error);
       throw new InternalServerErrorException('Unable to fetch transfer offers');
     }
   }
