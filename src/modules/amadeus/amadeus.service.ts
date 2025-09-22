@@ -51,90 +51,90 @@ export class AmadeusService {
       );
     }
   }
-async getTransferOffers(payloadFromFrontend: any) {
-  if (!this.accessToken) {
-    await this.authenticate();
-  }
-
-  // Random prefill payload
-  const prefillArray = [
-    {
-      startLocationCode: "JFK",
-      endAddressLine: "Liberty Island",
-      endCityName: "New York",
-      endZipCode: "10004",
-      endCountryCode: "US",
-      endName: "Statue of Liberty",
-      endGeoCode: "40.6892,-74.0445",
-      transferType: "PRIVATE",
-      startDateTime: "2025-09-04T12:00:00",
-      passengers: 2,
-    },
-    {
-      startLocationCode: "LAX",
-      endAddressLine: "Hollywood Blvd",
-      endCityName: "Los Angeles",
-      endZipCode: "90028",
-      endCountryCode: "US",
-      endName: "Hollywood Walk of Fame",
-      endGeoCode: "34.1016,-118.3269",
-      transferType: "PRIVATE",
-      startDateTime: "2025-09-05T09:30:00",
-      passengers: 3,
-    },
-    {
-      startLocationCode: "ORD",
-      endAddressLine: "Millennium Park",
-      endCityName: "Chicago",
-      endZipCode: "60601",
-      endCountryCode: "US",
-      endName: "Cloud Gate",
-      endGeoCode: "41.8826,-87.6226",
-      transferType: "PRIVATE",
-      startDateTime: "2025-09-06T14:00:00",
-      passengers: 1,
-    },
-    // … add other entries as needed
-  ];
-
-  // Pick a random base payload
-  const basePayload = prefillArray[Math.floor(Math.random() * prefillArray.length)];
-
-  // Only replace startDateTime from frontend payload, keep everything else from basePayload
-  const finalPayload = {
-    ...basePayload,
-    startDateTime: payloadFromFrontend.startDateTime || basePayload.startDateTime,
-  };
-
-  try {
-    // Remove Z if present
-    if (finalPayload.startDateTime?.endsWith('Z')) {
-      finalPayload.startDateTime = finalPayload.startDateTime.replace('Z', '');
-    }
-
-    const response = await this.amadeusClient.post(
-      '/v1/shopping/transfer-offers?max=20',
-      finalPayload,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
-    );
-
-    return response.data;
-  } catch (error: any) {
-    console.error('Error fetching transfer offers:', error.response?.data || error.message);
-
-    if (error.response?.status === 401) {
-      this.accessToken = null;
+  async getTransferOffers(payloadFromFrontend: any) {
+    if (!this.accessToken) {
       await this.authenticate();
-      return this.getTransferOffers(payloadFromFrontend);
     }
 
-    throw new InternalServerErrorException('Failed to fetch transfer offers');
+    // Random prefill payload
+    const prefillArray = [
+      {
+        startLocationCode: "JFK",
+        endAddressLine: "Liberty Island",
+        endCityName: "New York",
+        endZipCode: "10004",
+        endCountryCode: "US",
+        endName: "Statue of Liberty",
+        endGeoCode: "40.6892,-74.0445",
+        transferType: "PRIVATE",
+        startDateTime: "2025-09-04T12:00:00",
+        passengers: 2,
+      },
+      {
+        startLocationCode: "LAX",
+        endAddressLine: "Hollywood Blvd",
+        endCityName: "Los Angeles",
+        endZipCode: "90028",
+        endCountryCode: "US",
+        endName: "Hollywood Walk of Fame",
+        endGeoCode: "34.1016,-118.3269",
+        transferType: "PRIVATE",
+        startDateTime: "2025-09-05T09:30:00",
+        passengers: 3,
+      },
+      {
+        startLocationCode: "ORD",
+        endAddressLine: "Millennium Park",
+        endCityName: "Chicago",
+        endZipCode: "60601",
+        endCountryCode: "US",
+        endName: "Cloud Gate",
+        endGeoCode: "41.8826,-87.6226",
+        transferType: "PRIVATE",
+        startDateTime: "2025-09-06T14:00:00",
+        passengers: 1,
+      },
+      // … add other entries as needed
+    ];
+
+    // Pick a random base payload
+    const basePayload = prefillArray[Math.floor(Math.random() * prefillArray.length)];
+
+    // Only replace startDateTime from frontend payload, keep everything else from basePayload
+    const finalPayload = {
+      ...basePayload,
+      startDateTime: payloadFromFrontend.startDateTime || basePayload.startDateTime,
+    };
+
+    try {
+      // Remove Z if present
+      if (finalPayload.startDateTime?.endsWith('Z')) {
+        finalPayload.startDateTime = finalPayload.startDateTime.replace('Z', '');
+      }
+
+      const response = await this.amadeusClient.post(
+        '/v1/shopping/transfer-offers?max=20',
+        finalPayload,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      return response.data;
+    } catch (error: any) {
+      console.error('Error fetching transfer offers:', error.response?.data || error.message);
+
+      if (error.response?.status === 401) {
+        this.accessToken = null;
+        await this.authenticate();
+        return this.getTransferOffers(payloadFromFrontend);
+      }
+
+      throw new InternalServerErrorException('Failed to fetch transfer offers');
+    }
   }
-}
 
 
   async getLocations(keyword: string) {
