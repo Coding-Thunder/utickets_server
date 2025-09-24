@@ -9,7 +9,7 @@ export class AppController {
   @Get()
   async getHello(): Promise<Record<string, string>> {
     try {
-      // await sentTransactionalMail("TEST", "vinaymaheshwari35@gmail.com");
+      await sentTransactionalMail("TEST", "vinaymaheshwari35@gmail.com");
     } catch (error) {
       console.error("Failed to send transactional mail:", error);
     }
