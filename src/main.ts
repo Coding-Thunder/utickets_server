@@ -1,8 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './modules/app/app.module';
+import { sentTransactionalMail } from './utils/emails';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  await sentTransactionalMail("TEST", "vinaymaheshwari35@gmail.com");
 
   app.enableCors({
     origin: [

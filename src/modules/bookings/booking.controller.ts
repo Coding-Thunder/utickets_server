@@ -96,4 +96,9 @@ export class BookingController {
     ): Promise<Booking> {
         return this.bookingService.assignEmployeeToBooking(bookingId, employeeId);
     }
+
+    @Get("/test-email")
+    async testEmail():Promise<any> {
+        return  await this.bookingService.testMail()
+    }
 }

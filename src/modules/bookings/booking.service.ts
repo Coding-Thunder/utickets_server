@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId, Types } from 'mongoose';
 import { Booking } from '../../schemas/bookings.schema';
 import { CreateBookingDto, PaginateDto } from './booking.dto';
+import { sentTransactionalMail } from 'src/utils/emails';
 // import { sentTransactionalMail } from 'src/utils/emails';
 
 @Injectable()
@@ -13,24 +14,24 @@ export class BookingService {
         try {
             // Fetch the last created booking to get the latest bookingId
             const lastBooking = await this.bookingModel.findOne().sort({ bookingId: -1 }).exec();
-    
+
             // Generate the new bookingId based on the last one
             const newIdNumber = lastBooking ? parseInt(lastBooking.bookingId.replace('UTK', '')) + 1 : 1;
             const newBookingId = `UTK${newIdNumber}`;
-    
+
             // Set default status values
             const status = {
                 employee: null, // No employee assigned by default
                 value: false, // Booking not picked by a salesperson
             };
-    
+
             // Create the new booking with generated bookingId and default status
             const newBooking = new this.bookingModel({
                 ...bookingDetails,
                 bookingId: newBookingId,
                 status, // Set the default status
             });
-    
+
             await newBooking.save();
             // Send a transactional email with booking confirmation
             // try {
@@ -39,13 +40,13 @@ export class BookingService {
             //     // console.error('Failed to send booking confirmation email:', emailError);
             //     // Optionally, handle email failure (e.g., retry, notify admin)
             // }
-    
+
             return newBooking;
         } catch (error) {
             throw new InternalServerErrorException('An error occurred while creating the booking.');
         }
     }
-    
+
 
 
     async getBookingsByEmail(email: string, paginateDto?: PaginateDto): Promise<Booking[]> {
@@ -92,12 +93,12 @@ export class BookingService {
             if (!booking) {
                 throw new NotFoundException(`Booking with ID ${bookingId} not found`);
             }
-    
+
             // Update the booking's status to assign the employee
             booking.status.employee = employeeId; // Set the employee ID
             booking.status.value = true; // Optionally set the value to true if required
             await booking.save(); // Save the updated booking
-    
+
             return booking; // Return the updated booking
         } catch (error) {
             throw new InternalServerErrorException('An error occurred while assigning the employee to the booking.');
@@ -108,7 +109,7 @@ export class BookingService {
             // Replace this with your actual logic to fetch the discount
             // For example, you might fetch from a database or an external API
             const discount = await this.fetchDiscountFromDatabase(); // Example method
-            return {discount};
+            return { discount };
         } catch (error) {
             // Log the error for debugging (optional)
             // console.error('Error fetching booking discount:', error);
@@ -120,6 +121,17 @@ export class BookingService {
 
     private async fetchDiscountFromDatabase(): Promise<number> {
         // Simulate fetching the discount. Replace with actual implementation.
-        return 0; 
+        return 0;
+    }
+
+    async testMail() {
+        try {
+            await sentTransactionalMail("TEST", "vinaymaheshwari35@gmail.com");
+            console.log("worked")
+        } catch (error) {
+            console.log("Didn't worked")
+        }
     }
 }
+
+
