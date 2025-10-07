@@ -63,22 +63,47 @@ export class BookingService {
             throw new InternalServerErrorException('An error occurred while fetching bookings.');
         }
     }
-
-    // New method to fetch all bookings with pagination
     async getAllBookings(paginateDto: PaginateDto): Promise<any> {
         try {
-            const flights = await this.bookingModel.find()
-                .skip(paginateDto?.skip || 0)
-                .limit(paginateDto?.limit || 10);
+            const { skip = 0, limit = 10 } = paginateDto;
 
-            const cars = await this.carBooking.find()
-                .skip(paginateDto?.skip || 0)
-                .limit(paginateDto?.limit || 10);
-            return { flights, cars };
+            // Default: last 2 days
+            const startDate = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000);
+            const endDate = new Date();
+
+            const dateFilter = { createdAt: { $gte: startDate, $lte: endDate } };
+
+            // Fetch bookings
+            const [flights, totalFlights, cars, totalCars] = await Promise.all([
+                this.bookingModel.find(dateFilter).skip(skip).limit(limit),
+                this.bookingModel.countDocuments(dateFilter),
+                this.carBooking.find(dateFilter).skip(skip).limit(limit),
+                this.carBooking.countDocuments(dateFilter),
+            ]);
+
+            // Combine pagination meta
+            const totalItems = totalFlights + totalCars;
+            const totalPages = Math.ceil(totalItems / limit);
+
+            return {
+                flights,
+                cars,
+                meta: {
+                    totalItems,
+                    totalPages,
+                    currentPage: Math.floor(skip / limit) + 1,
+                    hasNextPage: skip + limit < totalItems,
+                    hasPrevPage: skip > 0,
+                    dateRange: { from: startDate, to: endDate },
+                },
+            };
         } catch (error) {
-            throw new InternalServerErrorException('An error occurred while fetching all bookings.');
+            throw new InternalServerErrorException(
+                'An error occurred while fetching bookings.',
+            );
         }
     }
+
 
     // New method to fetch a booking by ID
     async getBookingById(id: string): Promise<Booking> {
