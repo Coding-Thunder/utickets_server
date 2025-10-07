@@ -5,7 +5,7 @@ const transporter = nodemailer.createTransport({
     port: 465, // Recommended: 465 for SSL, which is more secure
     secure: true, // Use 'true' for port 465, 'false' for 587
     auth: {
-        user: 'support@rentalconfirmation.com', // Replace with your GoDaddy email
+        user: 'support@budgettravels4u.com', // Replace with your GoDaddy email
 
         pass: 'odn$3875G', // Replace with your email password
     },
@@ -99,7 +99,7 @@ export const sendOtpEmail = async (email: string, otp: string, code: string) => 
 
 export const sentTransactionalMail = async (bookingId: string, email: string) => {
     const mailOptions = {
-        from: 'Budget Travels4u <support@budgettravels4u.com>', // Sender name and address
+        from: 'support@budgettravels4u.com', // Sender name and address
         to: email, // Recipient's email address
         subject: 'Booking Successful - Universal Ticketss',
         html: `<!DOCTYPE html>
