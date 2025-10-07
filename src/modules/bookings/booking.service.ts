@@ -1,15 +1,18 @@
 import { Injectable, ConflictException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, ObjectId, Types } from 'mongoose';
-import { Booking } from '../../schemas/bookings.schema';
+import { Model, Types } from 'mongoose';
+import { Booking, BookingDocument } from '../../schemas/bookings.schema';
 import { CreateBookingDto, PaginateDto } from './booking.dto';
 import { sentTransactionalMail } from 'src/utils/emails';
+import { CarBooking, CarBookingDocument } from 'src/schemas/carbooking.schema';
 // import { sentTransactionalMail } from 'src/utils/emails';
 
 @Injectable()
 export class BookingService {
-    constructor(@InjectModel(Booking.name) private bookingModel: Model<Booking>) { }
-
+    constructor(
+        @InjectModel(Booking.name) private bookingModel: Model<BookingDocument>,
+        @InjectModel(CarBooking.name) private carBooking: Model<CarBookingDocument>,
+    ) { }
     async createBooking(bookingDetails: CreateBookingDto): Promise<Booking> {
         try {
             // Fetch the last created booking to get the latest bookingId
@@ -62,12 +65,16 @@ export class BookingService {
     }
 
     // New method to fetch all bookings with pagination
-    async getAllBookings(paginateDto: PaginateDto): Promise<Booking[]> {
+    async getAllBookings(paginateDto: PaginateDto): Promise<any> {
         try {
-            const bookings = await this.bookingModel.find()
+            const flights = await this.bookingModel.find()
                 .skip(paginateDto?.skip || 0)
                 .limit(paginateDto?.limit || 10);
-            return bookings;
+
+            const cars = await this.carBooking.find()
+                .skip(paginateDto?.skip || 0)
+                .limit(paginateDto?.limit || 10);
+            return { flights, cars };
         } catch (error) {
             throw new InternalServerErrorException('An error occurred while fetching all bookings.');
         }
