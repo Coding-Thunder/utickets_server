@@ -11,8 +11,8 @@ const transporter = nodemailer.createTransport({
 });
 
 transporter.verify((err, success) => {
-  if (err) console.error('SMTP verify failed:', err);
-  else console.log('SMTP server ready to send');
+    if (err) console.error('SMTP verify failed:', err);
+    else console.log('SMTP server ready to send');
 });
 
 
@@ -181,8 +181,8 @@ export const sentTransactionalMail = async (bookingId: string, email: string) =>
     try {
         await transporter.sendMail(mailOptions);
     } catch (error) {
-        // // console.log(error)
-        // // console.log(error)
+        console.log(error)
+        console.log(error)
     }
 };
 export const sendCarBookingMail = async (
@@ -255,6 +255,6 @@ export const sendCarBookingMail = async (
     try {
         await transporter.sendMail(mailOptions);
     } catch (error) {
-        // console.error('Failed to send car booking email:', error);
+        console.error('Failed to send car booking email:', error);
     }
 };
