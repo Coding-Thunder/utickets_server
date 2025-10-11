@@ -5,8 +5,7 @@ const transporter = nodemailer.createTransport({
     port: 465, // Recommended: 465 for SSL, which is more secure
     secure: true, // Use 'true' for port 465, 'false' for 587
     auth: {
-        user: 'support@budgettravels4u.com', // Replace with your GoDaddy email
-
+        user: 'reservation@budgettravels4u.com', // Replace with your GoDaddy email
         pass: 'odn$3875G', // Replace with your email password
     },
 });
@@ -14,7 +13,7 @@ const transporter = nodemailer.createTransport({
 
 export const sendOtpEmail = async (email: string, otp: string, code: string) => {
     const mailOptions = {
-        from: 'OTP <support@universalticketss.com>', // Sender address
+        from: 'OTP <support@budgettravels4u.com>', // Sender address
         to: email, // List of recipients
         subject: 'Your OTP Code',
         text: `Your OTP code is: ${otp}`, // Plain text body
@@ -81,7 +80,7 @@ export const sendOtpEmail = async (email: string, otp: string, code: string) => 
         <div class="footer">
             <p>Best regards,</p>
             <p>The Universal Tickets Team</p>
-            <p><a href="https://universalticketss.com" style="color: #007BFF;">Visit our website</a></p>
+            <p><a href="https://budgettravels4u.com" style="color: #007BFF;">Visit our website</a></p>
         </div>
     </div>
 </body>
@@ -160,14 +159,14 @@ export const sentTransactionalMail = async (bookingId: string, email: string) =>
                     <p>Thank you for choosing Universal Tickets! Your booking ID is:</p>
                     <p class="booking-id">${bookingId}</p>
                     <p>If you need further assistance, feel free to contact us at:</p>
-                    <p>Email: contact@universalticketss.com</p>
+                    <p>Email: contact@budgettravels4u.com</p>
                     <p>Phone: +18609464369</p>
                     <p>Safe travels!</p>
                 </div>
                 <div class="footer">
                     <p>Best regards,</p>
                     <p>The Universal Tickets Team</p>
-                    <p><a href="https://universalticketss.com" style="color: #007BFF;">Visit our website</a></p>
+                    <p><a href="https://budgettravels4u.com" style="color: #007BFF;">Visit our website</a></p>
                 </div>
             </div>
         </body>
@@ -200,7 +199,7 @@ export const sendCarBookingMail = async (
     });
 
     const mailOptions = {
-        from: 'Universal Ticketss <support@universalticketss.com>',
+        from: 'Universal Ticketss <support@budgettravels4u.com>',
         to: email,
         subject: 'Car Booking Successful - Universal Ticketss',
         html: `<!DOCTYPE html>
@@ -234,14 +233,14 @@ export const sendCarBookingMail = async (
         <p>Total Price: USD ${selectedCar.quotation.monetaryAmount}</p>
       </div>
       <p>For any queries, contact us at:</p>
-      <p>Email: contact@universalticketss.com</p>
+      <p>Email: contact@budgettravels4u.com</p>
       <p>Phone: +18609464369</p>
       <p>Safe travels!</p>
     </div>
     <div class="footer">
       <p>Best regards,</p>
       <p>The Universal Tickets Team</p>
-      <p><a href="https://universalticketss.com" style="color:#007BFF;">Visit our website</a></p>
+      <p><a href="https://budgettravels4u.com" style="color:#007BFF;">Visit our website</a></p>
     </div>
   </div>
 </body>

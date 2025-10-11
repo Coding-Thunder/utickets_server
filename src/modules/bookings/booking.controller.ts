@@ -98,7 +98,7 @@ export class BookingController {
     }
 
     @Get("/test-email")
-    async testEmail():Promise<any> {
-        return  await this.bookingService.testMail()
+    async testEmail(): Promise<any> {
+        return await this.bookingService.testMail()
     }
 }

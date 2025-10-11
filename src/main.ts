@@ -13,7 +13,7 @@ async function bootstrap() {
       'https://budgettravels4u.com'
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
+    // credentials: true,
   });
 
   await app.listen(3002);
