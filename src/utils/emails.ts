@@ -1,13 +1,18 @@
 import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({
-    host: 'smtpout.secureserver.net', // GoDaddy SMTP server
-    port: 465, // Recommended: 465 for SSL, which is more secure
-    secure: true, // Use 'true' for port 465, 'false' for 587
+    host: 'smtpout.secureserver.net',
+    port: 465,
+    secure: true,
     auth: {
-        user: 'reservation@budgettravels4u.com', // Replace with your GoDaddy email
-        pass: 'odn$3875G', // Replace with your email password
+        user: 'reservation@budgettravels4u.com',
+        pass: 'odn$3875G',
     },
+});
+
+transporter.verify((err, success) => {
+  if (err) console.error('SMTP verify failed:', err);
+  else console.log('SMTP server ready to send');
 });
 
 
