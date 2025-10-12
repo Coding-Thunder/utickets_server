@@ -60,6 +60,8 @@ export class CarBooking {
     employee: Types.ObjectId | null;
     value: boolean;
   };
+  @Prop({ type: Object, default: {} })
+  searchCriteria: Record<string, any>;
 
   @Prop({ unique: true })
   bookingId: string;
