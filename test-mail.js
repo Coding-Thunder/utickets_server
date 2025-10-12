@@ -1,14 +1,27 @@
 import nodemailer from 'nodemailer';
 
+// const transporter = nodemailer.createTransport({
+//   host: 'smtpout.secureserver.net',
+//   port: 465, // try 587 if this one fails
+//   secure: true, // use false if you switch to 587
+//   auth: {
+//     user: 'reservation@budgettravels4u.com',
+//     pass: 'odn$3875G',
+//   },
+// });
+
+
 const transporter = nodemailer.createTransport({
   host: 'smtpout.secureserver.net',
-  port: 465, // try 587 if this one fails
-  secure: true, // use false if you switch to 587
+  port: 80, // or whichever works
+  secure: false,
   auth: {
     user: 'reservation@budgettravels4u.com',
     pass: 'odn$3875G',
   },
+  tls: { rejectUnauthorized: false }
 });
+
 
 (async () => {
   try {

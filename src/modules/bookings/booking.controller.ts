@@ -74,9 +74,10 @@ export class BookingController {
     async getBookingsByContactInfo(
         @Query('email') email: string,
         @Query() paginateDto?: PaginateDto
-    ): Promise<Booking[]> {
-        return await this.bookingService.getBookingsByEmail(email, paginateDto);
+    ): Promise<Record<string, any>> {
+        return this.bookingService.getBookingsByEmail(email, paginateDto);
     }
+
 
     @Get() // This will be the endpoint for getting all bookings
     async getAllBookings(@Query() paginateDto?: PaginateDto): Promise<Booking[]> {

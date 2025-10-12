@@ -5,6 +5,7 @@ import { Booking, BookingDocument } from '../../schemas/bookings.schema';
 import { CreateBookingDto, PaginateDto } from './booking.dto';
 import { sentTransactionalMail } from 'src/utils/emails';
 import { CarBooking, CarBookingDocument } from 'src/schemas/carbooking.schema';
+import { HotelBooking, HotelBookingDocument } from 'src/schemas/hotel.schema';
 // import { sentTransactionalMail } from 'src/utils/emails';
 
 @Injectable()
@@ -12,6 +13,7 @@ export class BookingService {
     constructor(
         @InjectModel(Booking.name) private bookingModel: Model<BookingDocument>,
         @InjectModel(CarBooking.name) private carBooking: Model<CarBookingDocument>,
+        @InjectModel(HotelBooking.name) private hotelBooking: Model<HotelBookingDocument>,
     ) { }
     async createBooking(bookingDetails: CreateBookingDto): Promise<Booking> {
         try {
@@ -51,18 +53,23 @@ export class BookingService {
     }
 
 
-
-    async getBookingsByEmail(email: string, paginateDto?: PaginateDto): Promise<Booking[]> {
+    async getBookingsByEmail(email: string, paginateDto?: PaginateDto): Promise<Record<string, any>> {
         try {
+            const { skip = 0, limit = 10 } = paginateDto || {};
             const query = { 'contactInfo.email': email };
-            const bookings = await this.bookingModel.find(query)
-                .skip(paginateDto?.skip || 0)
-                .limit(paginateDto?.limit || 10);
-            return bookings;
+
+            const [flights, cars, hotels] = await Promise.all([
+                this.bookingModel.find(query).skip(skip).limit(limit),
+                this.carBooking.find(query).skip(skip).limit(limit),
+                this.hotelBooking.find(query).skip(skip).limit(limit)
+            ]);
+
+            return { flights, cars, hotels };
         } catch (error) {
-            throw new InternalServerErrorException('An error occurred while fetching bookings.');
+            throw new InternalServerErrorException('Failed to fetch user bookings.');
         }
     }
+
 
     // New method to fetch all bookings with pagination
     async getAllBookings(paginateDto: PaginateDto): Promise<any> {
