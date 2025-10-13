@@ -16,8 +16,8 @@ export class HotelBookingService {
         try {
             // Fetch the last created booking to generate new bookingId
             const lastBooking = await this.hotelBookingModel.findOne().sort({ bookingId: -1 }).exec();
-            const newIdNumber = lastBooking ? parseInt(lastBooking.bookingId.replace('HTL', '')) + 1 : 1;
-            const newBookingId = `HTL${newIdNumber}`;
+            const newIdNumber = lastBooking ? parseInt(lastBooking.bookingId.replace('BTHTL', '')) + 1 : 1;
+            const newBookingId = `BTHTL${newIdNumber}`;
 
             const status = {
                 employee: null,

@@ -21,8 +21,8 @@ export class BookingService {
             const lastBooking = await this.bookingModel.findOne().sort({ bookingId: -1 }).exec();
 
             // Generate the new bookingId based on the last one
-            const newIdNumber = lastBooking ? parseInt(lastBooking.bookingId.replace('UTK', '')) + 1 : 1;
-            const newBookingId = `UTK${newIdNumber}`;
+            const newIdNumber = lastBooking ? parseInt(lastBooking.bookingId.replace('BTFL', '')) + 1 : 1;
+            const newBookingId = `BTFL${newIdNumber}`;
 
             // Set default status values
             const status = {

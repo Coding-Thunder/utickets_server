@@ -14,9 +14,12 @@ export class CarBookingService {
     async createCarBooking(bookingDetails: any): Promise<CarBooking> {
         try {
             // Generate a unique booking ID for each new booking
-            const newBookingId = `UTKCAR${Date.now()}-${Math.floor(Math.random() * 1000)}`;
-            const status = { employee: null, value: false };
+            // Fetch the last created booking to get the latest bookingId
+            const lastBooking = await this.carBookingModel.findOne().sort({ bookingId: -1 }).exec();
 
+            // Generate the new bookingId based on the last one
+            const newIdNumber = lastBooking ? parseInt(lastBooking.bookingId.replace('BTCAR', '')) + 1 : 1; const status = { employee: null, value: false };
+            const newBookingId = `BTCAR${newIdNumber}`;
             const newBooking = new this.carBookingModel({
                 ...bookingDetails,
                 bookingId: newBookingId,
