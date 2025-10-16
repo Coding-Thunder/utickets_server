@@ -110,7 +110,7 @@ export const sendHotelBookingMail = async (bookingDetails: any) => {
                 <p><strong>Room:</strong> ${room.typeEstimated.category} (${room.description.text})</p>
                 <p><strong>Check-In:</strong> ${formattedCheckIn}</p>
                 <p><strong>Check-Out:</strong> ${formattedCheckOut}</p>
-                <p><strong>Total Price:</strong> ${price.currency} ${price.total}</p>
+                <p><strong>Total Price:</strong> USD ${price.total}</p>
                 <p>Contact: ${contactInfo.email} | ${contactInfo.phone}</p>
                 <p style="margin-top:20px; font-size:12px; color:#888;">BudgetTravels4U Team | <a href="https://budgettravels4u.com" style="color:#007BFF;">Visit our website</a></p>
             </div>`
