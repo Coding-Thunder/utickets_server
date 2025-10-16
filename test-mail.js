@@ -71,7 +71,7 @@ ${price.variations.changes.map((c) => `<li>${c.startDate} - ${c.endDate}: ${pric
 
 <p>For any queries, contact us at:</p>
 <p>Email: contact@budgettravels4u.com</p>
-<p>Phone: +18609464369</p>
+<p>Phone: +15513628471</p>
 
 <p style="font-size:12px; color:#888;">Best regards,<br/>The Budget Travels4U Team<br/><a href="https://budgettravels4u.com" style="color:#007BFF;">Visit our website</a></p>
 </div>

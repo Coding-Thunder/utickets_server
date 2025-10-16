@@ -79,7 +79,7 @@ export const sentTransactionalMail = async (bookingId: string, email: string) =>
 <p style="font-size:24px; font-weight:bold; color:#007BFF;">${bookingId}</p>
 <p>If you need further assistance, contact us at:</p>
 <p>Email: contact@budgettravels4u.com</p>
-<p>Phone: +18609464369</p>
+<p>Phone: +1-551-362-8471</p>
 <p>Safe travels!</p>
 <p style="font-size:12px; color:#888;">Best regards,<br/>The Budget Travels4U Team<br/><a href="https://budgettravels4u.com" style="color:#007BFF;">Visit our website</a></p>
 </div>
@@ -128,7 +128,7 @@ export const sendCarBookingMail = async (
 </div>
 <p>For any queries, contact us at:</p>
 <p>Email: contact@budgettravels4u.com</p>
-<p>Phone: +18609464369</p>
+<p>Phone: +1-551-362-8471</p>
 <p>Safe travels!</p>
 <p style="font-size:12px; color:#888;">Best regards,<br/>The Budget Travels4U Team<br/><a href="https://budgettravels4u.com" style="color:#007BFF;">Visit our website</a></p>
 </div>
@@ -199,7 +199,7 @@ ${price.variations.changes.map(c => `<li>${c.startDate} - ${c.endDate}: ${price.
 
 <p>For any queries, contact us at:</p>
 <p>Email: contact@budgettravels4u.com</p>
-<p>Phone: +18609464369</p>
+<p>Phone: +1-551-362-8471</p>
 
 <p style="font-size:12px; color:#888;">Best regards,<br/>The Budget Travels4U Team<br/><a href="https://budgettravels4u.com" style="color:#007BFF;">Visit our website</a></p>
 </div>
