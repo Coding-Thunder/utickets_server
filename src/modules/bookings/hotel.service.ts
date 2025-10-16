@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { HotelBooking, HotelBookingDocument } from 'src/schemas/hotel.schema';
 import { PaginateDto } from './booking.dto';
+import { sendHotelBookingMail } from 'src/utils/emails';
 
 
 @Injectable()
@@ -30,6 +31,10 @@ export class HotelBookingService {
                 status,
             });
 
+
+              if (bookingDetails.contactInfo?.email && bookingDetails.selectedOffer) {
+                            await sendHotelBookingMail({newBookingId, ...bookingDetails});
+                        }
             await newBooking.save();
 
             // Optional: send email confirmation here
