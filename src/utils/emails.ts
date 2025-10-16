@@ -185,13 +185,8 @@ export const sendHotelBookingMail = async (
 
 <h3>Price Breakdown</h3>
 <ul>
-${price.variations.changes.map(c => `<li>${c.startDate} - ${c.endDate}: ${price.currency} ${c.base}</li>`).join('')}
-<li>Taxes: ${price.currency} ${price.taxes.reduce((acc, t) => acc + parseFloat(t.amount), 0)}</li>
+${price.variations.changes.map(c => `<li>${c.startDate} - ${c.endDate}: USD ${c.base}</li>`).join('')}
 </ul>
-
-<h3>Cancellation Policy</h3>
-<p>Deadline: ${new Date(policies.cancellations[0].deadline).toLocaleString('en-US')}</p>
-<p>Amount: ${price.currency} ${policies.cancellations[0].amount}</p>
 
 <h3>Guest Contact</h3>
 <p>Email: ${contactInfo.email}</p>
