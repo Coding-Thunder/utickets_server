@@ -1,260 +1,145 @@
-import nodemailer from 'nodemailer';
 
-const transporter = nodemailer.createTransport({
-    host: 'smtpout.secureserver.net',
-    port: 465,
-    secure: true,
-    auth: {
-        user: 'reservation@budgettravels4u.com',
-        pass: 'odn$3875G',
-    },
+
+
+import FormData from 'form-data';
+import Mailgun from 'mailgun.js';
+
+const MAILGUN_API_KEY = '';
+const MAILGUN_DOMAIN = "";
+
+
+const mailgun = new Mailgun(FormData);
+const mg = mailgun.client({
+   username: 'api',
+   key: MAILGUN_API_KEY,
+   // url: 'https://api.eu.mailgun.net' // uncomment if EU domain
 });
 
-transporter.verify((err, success) => {
-    if (err) console.error('SMTP verify failed:', err);
-    else console.log('SMTP server ready to send');
-});
-
-
+// ---------------- OTP EMAIL ----------------
 export const sendOtpEmail = async (email: string, otp: string, code: string) => {
-    const mailOptions = {
-        from: 'OTP <support@budgettravels4u.com>', // Sender address
-        to: email, // List of recipients
-        subject: 'Your OTP Code',
-        text: `Your OTP code is: ${otp}`, // Plain text body
-        html: `<!DOCTYPE html>
+   try {
+       const data = await mg.messages.create(MAILGUN_DOMAIN, {
+           from: 'BudgetTravels4U <no-reply@confirmation.budgettravels4u.com>',
+           to: [email],
+           subject: 'Your OTP Code',
+           text: `Your OTP code is: ${otp}`,
+           html: `<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your OTP Code</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        .container {
-            width: 100%;
-            max-width: 600px;
-            margin: 20px auto;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .header {
-            background-color: #007BFF;
-            color: #ffffff;
-            padding: 20px;
-            text-align: center;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-        }
-        .content {
-            padding: 20px;
-        }
-        .footer {
-            text-align: center;
-            padding: 10px;
-            background-color: #f4f4f4;
-            border-bottom-left-radius: 8px;
-            border-bottom-right-radius: 8px;
-            font-size: 12px;
-            color: #888888;
-        }
-        .otp {
-            font-size: 24px;
-            font-weight: bold;
-            color: #007BFF;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Your OTP Code</title>
+<style>
+body { font-family: Arial, sans-serif; background:#f4f4f4; margin:0; padding:0;}
+.container { max-width:600px; margin:20px auto; background:#fff; border-radius:8px; padding:20px;}
+.header { background:#007BFF; color:#fff; padding:20px; text-align:center; border-radius:8px 8px 0 0;}
+.content { padding:20px; }
+.footer { text-align:center; padding:10px; background:#f4f4f4; font-size:12px; color:#888; border-radius:0 0 8px 8px;}
+.otp { font-size:24px; font-weight:bold; color:#007BFF; }
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Your OTP Code</h1>
-        </div>
-        <div class="content">
-            <p>Dear Employee,</p>
-            <p>Thank you for being a valued member of Universal Tickets! Your One-Time Password (OTP) code for employee <strong>${code}</strong> is:</p>
-            <p class="otp">${otp}</p>
-            <p>Please use this code to complete your login.</p>
-            <p>If you did not request this code, please ignore this email or contact support.</p>
-        </div>
-        <div class="footer">
-            <p>Best regards,</p>
-            <p>The Universal Tickets Team</p>
-            <p><a href="https://budgettravels4u.com" style="color: #007BFF;">Visit our website</a></p>
-        </div>
-    </div>
-</body>
-</html>` // HTML body
-    };
-
-    try {
-        await transporter.sendMail(mailOptions);
-    } catch (error) {
-        // // console.log(error)
-        throw new Error('Failed to send OTP email');
-    }
-};
-
-
-export const sentTransactionalMail = async (bookingId: string, email: string) => {
-    const mailOptions = {
-        from: 'support@budgettravels4u.com', // Sender name and address
-        to: email, // Recipient's email address
-        subject: 'Booking Successful - Universal Ticketss',
-        html: `<!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Booking Confirmation</title>
-            <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    margin: 0;
-                    padding: 0;
-                    background-color: #f4f4f4;
-                }
-                .container {
-                    width: 100%;
-                    max-width: 600px;
-                    margin: 20px auto;
-                    background-color: #ffffff;
-                    border-radius: 8px;
-                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                }
-                .header {
-                    background-color: #007BFF;
-                    color: #ffffff;
-                    padding: 20px;
-                    text-align: center;
-                    border-top-left-radius: 8px;
-                    border-top-right-radius: 8px;
-                }
-                .content {
-                    padding: 20px;
-                }
-                .footer {
-                    text-align: center;
-                    padding: 10px;
-                    background-color: #f4f4f4;
-                    border-bottom-left-radius: 8px;
-                    border-bottom-right-radius: 8px;
-                    font-size: 12px;
-                    color: #888888;
-                }
-                .booking-id {
-                    font-size: 24px;
-                    font-weight: bold;
-                    color: #007BFF;
-                }
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <div class="header">
-                    <h1>Booking Confirmed</h1>
-                </div>
-                <div class="content">
-                    <p>Dear Customer,</p>
-                    <p>Thank you for choosing Universal Tickets! Your booking ID is:</p>
-                    <p class="booking-id">${bookingId}</p>
-                    <p>If you need further assistance, feel free to contact us at:</p>
-                    <p>Email: contact@budgettravels4u.com</p>
-                    <p>Phone: +18609464369</p>
-                    <p>Safe travels!</p>
-                </div>
-                <div class="footer">
-                    <p>Best regards,</p>
-                    <p>The Universal Tickets Team</p>
-                    <p><a href="https://budgettravels4u.com" style="color: #007BFF;">Visit our website</a></p>
-                </div>
-            </div>
-        </body>
-        </html>`
-    };
-
-    try {
-        await transporter.sendMail(mailOptions);
-    } catch (error) {
-        console.log(error)
-        console.log(error)
-    }
-};
-export const sendCarBookingMail = async (
-    bookingId: string,
-    email: string,
-    selectedCar: any,
-    searchCriteria: any
-) => {
-    const pickupDate = new Date(searchCriteria.time);
-    const formattedPickupDate = pickupDate.toLocaleDateString('en-US', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
-    });
-    const formattedPickupTime = pickupDate.toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false
-    });
-
-    const mailOptions = {
-        from: 'Universal Ticketss <support@budgettravels4u.com>',
-        to: email,
-        subject: 'Car Booking Successful - Universal Ticketss',
-        html: `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Car Booking Confirmation</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f4f4f4; }
-    .container { width:100%; max-width:600px; margin:20px auto; background:#fff; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.1);}
-    .header { background:#007BFF; color:#fff; padding:20px; text-align:center; border-radius:8px 8px 0 0;}
-    .content { padding:20px; }
-    .footer { text-align:center; padding:10px; background:#f4f4f4; border-radius:0 0 8px 8px; font-size:12px; color:#888;}
-    .booking-id, .car-info { font-size:20px; font-weight:bold; color:#007BFF; margin:8px 0; }
-    .details { margin:8px 0; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header"><h1>Car Booking Confirmed</h1></div>
-    <div class="content">
-      <p>Dear Customer,</p>
-      <p>Your car booking ID is:</p>
-      <p class="booking-id">${bookingId}</p>
-      <p class="car-info">Car Details:</p>
-      <div class="details">
-        <p>${selectedCar.vehicle.description.includes(",") && selectedCar.vehicle.description.split(",")[1]}</p>
-        <p>Pickup: ${formattedPickupDate}, ${formattedPickupTime} (${searchCriteria.startLocationCode})</p>
-        <p>Dropoff: ${searchCriteria.endName}</p>
-        <p>Total Price: USD ${selectedCar.quotation.monetaryAmount}</p>
-      </div>
-      <p>For any queries, contact us at:</p>
-      <p>Email: contact@budgettravels4u.com</p>
-      <p>Phone: +18609464369</p>
-      <p>Safe travels!</p>
-    </div>
-    <div class="footer">
-      <p>Best regards,</p>
-      <p>The Universal Tickets Team</p>
-      <p><a href="https://budgettravels4u.com" style="color:#007BFF;">Visit our website</a></p>
-    </div>
-  </div>
+<div class="container">
+<div class="header"><h1>Your OTP Code</h1></div>
+<div class="content">
+<p>Dear Employee,</p>
+<p>Your OTP code for employee <strong>${code}</strong> is:</p>
+<p class="otp">${otp}</p>
+<p>Please use this code to complete your login.</p>
+</div>
+<div class="footer">
+<p>Best regards,<br/>The Budget Travels4U Team</p>
+<p><a href="https://budgettravels4u.com" style="color:#007BFF;">Visit our website</a></p>
+</div>
+</div>
 </body>
 </html>`
-    };
-
-    try {
-        await transporter.sendMail(mailOptions);
-    } catch (error) {
-        console.error('Failed to send car booking email:', error);
-    }
+       });
+       console.log('✅ OTP email sent:', data);
+   } catch (err) {
+       console.error('❌ Failed to send OTP email:', err);
+   }
 };
+
+// ---------------- TRANSACTIONAL BOOKING EMAIL ----------------
+export const sentTransactionalMail = async (bookingId: string, email: string) => {
+   try {
+       const data = await mg.messages.create(MAILGUN_DOMAIN, {
+           from: 'BudgetTravels4U <no-reply@confirmation.budgettravels4u.com>',
+           to: [email],
+           subject: 'Booking Successful - Budget Travels4U',
+           html: `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Booking Confirmation</title></head>
+<body>
+<div style="font-family: Arial, sans-serif; background:#f4f4f4; padding:20px;">
+<div style="max-width:600px; margin:0 auto; background:#fff; border-radius:8px; padding:20px;">
+<h1 style="background:#007BFF; color:#fff; padding:20px; border-radius:8px 8px 0 0;">Booking Confirmed</h1>
+<p>Dear Customer,</p>
+<p>Thank you for choosing Budget Travels4U! Your booking ID is:</p>
+<p style="font-size:24px; font-weight:bold; color:#007BFF;">${bookingId}</p>
+<p>If you need further assistance, contact us at:</p>
+<p>Email: contact@budgettravels4u.com</p>
+<p>Phone: +18609464369</p>
+<p>Safe travels!</p>
+<p style="font-size:12px; color:#888;">Best regards,<br/>The Budget Travels4U Team<br/><a href="https://budgettravels4u.com" style="color:#007BFF;">Visit our website</a></p>
+</div>
+</div>
+</body>
+</html>`
+       });
+       console.log('✅ Transactional email sent:', data);
+   } catch (err) {
+       console.error('❌ Failed to send transactional email:', err);
+   }
+};
+
+// ---------------- CAR BOOKING EMAIL ----------------
+export const sendCarBookingMail = async (
+   bookingId: string,
+   email: string,
+   selectedCar: any,
+   searchCriteria: any
+) => {
+   const pickupDate = new Date(searchCriteria.time);
+   const formattedPickupDate = pickupDate.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+   const formattedPickupTime = pickupDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+
+   try {
+       const data = await mg.messages.create(MAILGUN_DOMAIN, {
+           from: 'BudgetTravels4U <no-reply@confirmation.budgettravels4u.com>',
+           to: [email],
+           subject: 'Car Booking Successful - Budget Travels4Us',
+           html: `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Car Booking Confirmation</title></head>
+<body>
+<div style="font-family: Arial, sans-serif; background:#f4f4f4; padding:20px;">
+<div style="max-width:600px; margin:20px auto; background:#fff; border-radius:8px; padding:20px;">
+<h1 style="background:#007BFF; color:#fff; padding:20px; border-radius:8px 8px 0 0;">Car Booking Confirmed</h1>
+<p>Dear Customer,</p>
+<p>Your car booking ID is:</p>
+<p style="font-size:20px; font-weight:bold; color:#007BFF;">${bookingId}</p>
+<p>Car Details:</p>
+<div>
+<p>${selectedCar.vehicle.description.includes(",") ? selectedCar.vehicle.description.split(",")[1] : selectedCar.vehicle.description}</p>
+<p>Pickup: ${formattedPickupDate}, ${formattedPickupTime} (${searchCriteria.startLocationCode})</p>
+<p>Dropoff: ${searchCriteria.endName}</p>
+<p>Total Price: USD ${selectedCar.quotation.monetaryAmount}</p>
+</div>
+<p>For any queries, contact us at:</p>
+<p>Email: contact@budgettravels4u.com</p>
+<p>Phone: +18609464369</p>
+<p>Safe travels!</p>
+<p style="font-size:12px; color:#888;">Best regards,<br/>The Budget Travels4U Team<br/><a href="https://budgettravels4u.com" style="color:#007BFF;">Visit our website</a></p>
+</div>
+</div>
+</body>
+</html>`
+       });
+       console.log('✅ Car booking email sent:', data);
+   } catch (err) {
+       console.error('❌ Failed to send car booking email:', err);
+   }
+};
+
+
