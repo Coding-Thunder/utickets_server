@@ -43,7 +43,7 @@ export const sentTransactionalMail = async (bookingId: string, email: string) =>
         const data = await mg.messages.create(MAILGUN_DOMAIN, {
             from: 'BudgetTravels4U <no-reply@confirmation.budgettravels4u.com>',
             to: [email],
-            subject: 'Booking Confirmed',
+            subject: 'Flight Booking Reference',
             html: `
             <div style="font-family:Arial,sans-serif; max-width:600px; margin:20px auto; padding:20px; border:1px solid #ddd; border-radius:8px;">
                 <h2 style="color:#007BFF;">Booking Confirmed</h2>
@@ -70,7 +70,7 @@ export const sendCarBookingMail = async (bookingId: string, email: string, selec
         const data = await mg.messages.create(MAILGUN_DOMAIN, {
             from: 'BudgetTravels4U <no-reply@confirmation.budgettravels4u.com>',
             to: [email],
-            subject: 'Car Booking Confirmed',
+            subject: 'Car Booking Reference',
             html: `
             <div style="font-family:Arial,sans-serif; max-width:600px; margin:20px auto; padding:20px; border:1px solid #ddd; border-radius:8px;">
                 <h2 style="color:#007BFF;">Car Booking Confirmed</h2>
@@ -101,7 +101,7 @@ export const sendHotelBookingMail = async (bookingDetails: any) => {
         const data = await mg.messages.create(MAILGUN_DOMAIN, {
             from: 'BudgetTravels4U <no-reply@confirmation.budgettravels4u.com>',
             to: [contactInfo.email],
-            subject: `Hotel Booking Confirmed - ${hotelName}`,
+            subject: `Hotel Booking Reference - ${hotelName}`,
             html: `
             <div style="font-family:Arial,sans-serif; max-width:600px; margin:20px auto; padding:20px; border:1px solid #ddd; border-radius:8px;">
                 <h2 style="color:#007BFF;">Hotel Booking Confirmed</h2>
