@@ -46,7 +46,7 @@ export const sentTransactionalMail = async (bookingId: string, email: string) =>
             subject: 'Flight Booking Reference',
             html: `
             <div style="font-family:Arial,sans-serif; max-width:600px; margin:20px auto; padding:20px; border:1px solid #ddd; border-radius:8px;">
-                <h2 style="color:#007BFF;">Booking Confirmed</h2>
+                <h2 style="color:#007BFF;">Booking Reference</h2>
                 <p>Thank you for choosing BudgetTravels4U!</p>
                 <p><strong>Booking ID:</strong> ${bookingId}</p>
                 <p>If you have questions, contact us:</p>
@@ -73,7 +73,7 @@ export const sendCarBookingMail = async (bookingId: string, email: string, selec
             subject: 'Car Booking Reference',
             html: `
             <div style="font-family:Arial,sans-serif; max-width:600px; margin:20px auto; padding:20px; border:1px solid #ddd; border-radius:8px;">
-                <h2 style="color:#007BFF;">Car Booking Confirmed</h2>
+                <h2 style="color:#007BFF;">Car Booking Reference</h2>
                 <p><strong>Booking ID:</strong> ${bookingId}</p>
                 <p><strong>Car:</strong> ${selectedCar.vehicle.description.split(",")[1] || selectedCar.vehicle.description}</p>
                 <p><strong>Pickup:</strong> ${formattedPickupDate}, ${formattedPickupTime} (${searchCriteria.startLocationCode})</p>
@@ -104,7 +104,7 @@ export const sendHotelBookingMail = async (bookingDetails: any) => {
             subject: `Hotel Booking Reference - ${hotelName}`,
             html: `
             <div style="font-family:Arial,sans-serif; max-width:600px; margin:20px auto; padding:20px; border:1px solid #ddd; border-radius:8px;">
-                <h2 style="color:#007BFF;">Hotel Booking Confirmed</h2>
+                <h2 style="color:#007BFF;">Hotel Booking Reference</h2>
                 <p><strong>Booking ID:</strong> ${newBookingId}</p>
                 <p><strong>Hotel:</strong> ${hotelName}</p>
                 <p><strong>Room:</strong> ${room.typeEstimated.category} (${room.description.text})</p>
