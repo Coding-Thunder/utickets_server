@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Booking, BookingDocument } from '../../schemas/bookings.schema';
 import { CreateBookingDto, PaginateDto } from './booking.dto';
-import { sentTransactionalMail } from 'src/utils/emails';
+// import { sentTransactionalMail } from 'src/utils/emails';
 import { CarBooking, CarBookingDocument } from 'src/schemas/carbooking.schema';
 import { HotelBooking, HotelBookingDocument } from 'src/schemas/hotel.schema';
 // import { sentTransactionalMail } from 'src/utils/emails';
@@ -39,12 +39,12 @@ export class BookingService {
 
             await newBooking.save();
             // Send a transactional email with booking confirmation
-            try {
-                await sentTransactionalMail(newBooking.bookingId, newBooking.contactInfo.email);
-            } catch (emailError) {
-                console.error('Failed to send booking confirmation email:', emailError);
-                // Optionally, handle email failure (e.g., retry, notify admin)
-            }
+            // try {
+            //     await sentTransactionalMail(newBooking.bookingId, newBooking.contactInfo.email);
+            // } catch (emailError) {
+            //     console.error('Failed to send booking confirmation email:', emailError);
+            //     // Optionally, handle email failure (e.g., retry, notify admin)
+            // }
 
             return newBooking;
         } catch (error) {
@@ -138,14 +138,14 @@ export class BookingService {
         return 0;
     }
 
-    async testMail() {
-        try {
-            await sentTransactionalMail("TEST", "vinaymaheshwari35@gmail.com");
-            console.log("worked")
-        } catch (error) {
-            console.log("Didn't worked")
-        }
-    }
+    // async testMail() {
+    //     try {
+    //         await sentTransactionalMail("TEST", "vinaymaheshwari35@gmail.com");
+    //         console.log("worked")
+    //     } catch (error) {
+    //         console.log("Didn't worked")
+    //     }
+    // }
 }
 
 

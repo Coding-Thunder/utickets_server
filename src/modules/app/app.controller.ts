@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { sentTransactionalMail } from 'src/utils/emails';
+// import { sentTransactionalMail } from 'src/utils/emails';
 
 @Controller()
 export class AppController {

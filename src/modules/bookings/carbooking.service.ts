@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException, NotFoundException } from '@ne
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { CarBooking, CarBookingDocument } from 'src/schemas/carbooking.schema';
-import { sendCarBookingMail } from 'src/utils/emails';
+// import { sendCarBookingMail } from 'src/utils/emails';
 
 @Injectable()
 export class CarBookingService {
@@ -28,14 +28,14 @@ export class CarBookingService {
 
             await newBooking.save();
             // Send car booking confirmation email
-            if (bookingDetails.contactInfo?.email && bookingDetails.selectedCar) {
-                await sendCarBookingMail(
-                    newBookingId,
-                    bookingDetails.contactInfo.email,
-                    bookingDetails.selectedCar,
-                    bookingDetails.searchCriteria
-                );
-            }
+            // if (bookingDetails.contactInfo?.email && bookingDetails.selectedCar) {
+            //     await sendCarBookingMail(
+            //         newBookingId,
+            //         bookingDetails.contactInfo.email,
+            //         bookingDetails.selectedCar,
+            //         bookingDetails.searchCriteria
+            //     );
+            // }
             return newBooking;
         } catch (error) {
             // console.error('Error creating car booking:', error);

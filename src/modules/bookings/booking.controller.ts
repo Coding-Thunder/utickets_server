@@ -98,8 +98,8 @@ export class BookingController {
         return this.bookingService.assignEmployeeToBooking(bookingId, employeeId);
     }
 
-    @Get("/test-email")
-    async testEmail(): Promise<any> {
-        return await this.bookingService.testMail()
-    }
+    // @Get("/test-email")
+    // async testEmail(): Promise<any> {
+    //     return await this.bookingService.testMail()
+    // }
 }

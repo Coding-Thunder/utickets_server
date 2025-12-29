@@ -10,7 +10,7 @@ import { Employee, EmployeeDocument } from '../../schemas/employee.schema';
 import { CreateEmployeeDto } from './crm.dto';
 import { randomBytes } from 'crypto';
 import { Otp, OtpDocument } from '../../schemas/otp.schema';
-import { sendOtpEmail } from 'src/utils/emails';
+// import { sendOtpEmail } from 'src/utils/emails';
 
 @Injectable()
 export class CrmService {
@@ -63,7 +63,7 @@ export class CrmService {
                 { upsert: true },
             );
 
-            await sendOtpEmail(email, otp, employee.code); // Send OTP via email (or SMS)
+            // await sendOtpEmail(email, otp, employee.code); // Send OTP via email (or SMS)
         } catch (error) {
             throw new InternalServerErrorException(
                 'Failed to send OTP. ' + error.message,
