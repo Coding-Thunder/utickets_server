@@ -12,7 +12,7 @@ import { DashboardModule } from '../dashboard/dashboard.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }), // Make ConfigModule global
-    MongooseModule.forRoot(`${process.env.DATABASE_MONGO_URI || "mongodb+srv://travelsb425_db_user:BOGnr3oIVG5mkUon@cluster0.cexvi5q.mongodb.net/?appName=Cluster0"}`),
+    MongooseModule.forRoot(`${process.env.DATABASE_MONGO_URI}`),
     AuthModule,
     AmadeusModule,
     BookingModule,
@@ -22,4 +22,8 @@ import { DashboardModule } from '../dashboard/dashboard.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {
+  constructor() {
+    console.log("DB URI at runtime:", process.env.DATABASE_MONGO_URI);
+  }
+}
