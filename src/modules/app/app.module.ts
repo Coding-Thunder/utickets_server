@@ -12,7 +12,7 @@ import { DashboardModule } from '../dashboard/dashboard.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }), // Make ConfigModule global
-    MongooseModule.forRoot(`${process.env.DATABASE_MONGO_URI}`),
+    MongooseModule.forRoot(`${process.env.DATABASE_MONGO_URI || "mongodb+srv://travelsb425_db_user:BOGnr3oIVG5mkUon@cluster0.cexvi5q.mongodb.net/?appName=Cluster0"}`),
     AuthModule,
     AmadeusModule,
     BookingModule,
