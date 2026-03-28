@@ -6,16 +6,19 @@ async function bootstrap() {
 
   app.enableCors({
     origin: [
-      'http://localhost:3000', // Add your frontend origin
-      'http://localhost:3001', // Add your frontend origin
-      'https://universalticketss.com', // Allow production origin
-      'https://crm.universalticketss.com', // Allow production origin
-      'https://rentalconfirmation.com/'
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'https://universalticketss.com',
+      'https://crm.universalticketss.com',
+      'https://rentalconfirmation.com'
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
 
-  await app.listen(3002);
+  const port = process.env.PORT || 3000;
+  await app.listen(port);
+
+  console.log(`Server running on port ${port}`);
 }
 bootstrap();
