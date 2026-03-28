@@ -1,6 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios, { AxiosInstance } from 'axios';
+import { getFutureDateTime } from 'src/utils/helpers';
 
 @Injectable()
 export class AmadeusService {
@@ -66,7 +67,7 @@ export class AmadeusService {
         endName: "Statue of Liberty",
         endGeoCode: "40.6892,-74.0445",
         transferType: "PRIVATE",
-        startDateTime: "2025-09-04T12:00:00",
+        startDateTime: getFutureDateTime(),
         passengers: 2,
       },
       {
@@ -78,7 +79,7 @@ export class AmadeusService {
         endName: "Hollywood Walk of Fame",
         endGeoCode: "34.1016,-118.3269",
         transferType: "PRIVATE",
-        startDateTime: "2025-09-05T09:30:00",
+        startDateTime: getFutureDateTime(),
         passengers: 3,
       },
       {
@@ -90,7 +91,7 @@ export class AmadeusService {
         endName: "Cloud Gate",
         endGeoCode: "41.8826,-87.6226",
         transferType: "PRIVATE",
-        startDateTime: "2025-09-06T14:00:00",
+        startDateTime: getFutureDateTime(),
         passengers: 1,
       },
       {
@@ -102,7 +103,7 @@ export class AmadeusService {
         endName: "Golden Gate Bridge",
         endGeoCode: "37.8199,-122.4783",
         transferType: "PRIVATE",
-        startDateTime: "2025-09-07T11:45:00",
+        startDateTime: getFutureDateTime(),
         passengers: 4,
       },
       {
@@ -114,7 +115,7 @@ export class AmadeusService {
         endName: "South Beach",
         endGeoCode: "25.7820,-80.1340",
         transferType: "PRIVATE",
-        startDateTime: "2025-09-08T16:30:00",
+        startDateTime: getFutureDateTime(),
         passengers: 2,
       },
       {
@@ -126,7 +127,7 @@ export class AmadeusService {
         endName: "Boston Common",
         endGeoCode: "42.3551,-71.0656",
         transferType: "PRIVATE",
-        startDateTime: "2025-09-09T10:15:00",
+        startDateTime: getFutureDateTime(),
         passengers: 1,
       },
       {
@@ -138,7 +139,7 @@ export class AmadeusService {
         endName: "Seattle Aquarium",
         endGeoCode: "47.6097,-122.3425",
         transferType: "PRIVATE",
-        startDateTime: "2025-09-10T12:00:00",
+        startDateTime: getFutureDateTime(),
         passengers: 2,
       },
       {
@@ -150,7 +151,7 @@ export class AmadeusService {
         endName: "Georgia Aquarium",
         endGeoCode: "33.7627,-84.3950",
         transferType: "PRIVATE",
-        startDateTime: "2025-09-11T15:45:00",
+        startDateTime: getFutureDateTime(),
         passengers: 3,
       },
       {
@@ -162,7 +163,7 @@ export class AmadeusService {
         endName: "Papago Park",
         endGeoCode: "33.4625,-111.9461",
         transferType: "PRIVATE",
-        startDateTime: "2025-09-12T09:00:00",
+        startDateTime: getFutureDateTime(),
         passengers: 1,
       },
       {
@@ -174,7 +175,7 @@ export class AmadeusService {
         endName: "Denver Botanic Gardens",
         endGeoCode: "39.6654,-105.2057",
         transferType: "PRIVATE",
-        startDateTime: "2025-09-13T11:30:00",
+        startDateTime: getFutureDateTime(),
         passengers: 2,
       },
       {
@@ -186,7 +187,7 @@ export class AmadeusService {
         endName: "Bellagio Fountains",
         endGeoCode: "36.1126,-115.1767",
         transferType: "PRIVATE",
-        startDateTime: "2025-09-14T20:00:00",
+        startDateTime: getFutureDateTime(),
         passengers: 4,
       },
       {
@@ -198,7 +199,7 @@ export class AmadeusService {
         endName: "Liberty Bell",
         endGeoCode: "39.9489,-75.1500",
         transferType: "PRIVATE",
-        startDateTime: "2025-09-15T13:00:00",
+        startDateTime: getFutureDateTime(),
         passengers: 2,
       },
       {
@@ -210,7 +211,7 @@ export class AmadeusService {
         endName: "Lincoln Memorial",
         endGeoCode: "38.8893,-77.0502",
         transferType: "PRIVATE",
-        startDateTime: "2025-09-16T14:30:00",
+        startDateTime: getFutureDateTime(),
         passengers: 3,
       },
       {
@@ -222,7 +223,7 @@ export class AmadeusService {
         endName: "Balboa Park",
         endGeoCode: "32.7341,-117.1446",
         transferType: "PRIVATE",
-        startDateTime: "2025-09-17T10:45:00",
+        startDateTime: getFutureDateTime(),
         passengers: 1,
       },
       {
@@ -234,7 +235,7 @@ export class AmadeusService {
         endName: "State Capitol",
         endGeoCode: "30.2747,-97.7404",
         transferType: "PRIVATE",
-        startDateTime: "2025-09-18T09:15:00",
+        startDateTime: getFutureDateTime(),
         passengers: 2,
       },
       {
@@ -246,7 +247,7 @@ export class AmadeusService {
         endName: "Jackson Square",
         endGeoCode: "29.9574,-90.0622",
         transferType: "PRIVATE",
-        startDateTime: "2025-09-19T16:00:00",
+        startDateTime: getFutureDateTime(),
         passengers: 3,
       },
       {
@@ -258,7 +259,7 @@ export class AmadeusService {
         endName: "Chihuly Garden and Glass",
         endGeoCode: "47.6205,-122.3493",
         transferType: "PRIVATE",
-        startDateTime: "2025-09-20T12:15:00",
+        startDateTime: getFutureDateTime(),
         passengers: 2,
       },
       {
@@ -270,7 +271,7 @@ export class AmadeusService {
         endName: "Magic Kingdom",
         endGeoCode: "28.4177,-81.5812",
         transferType: "PRIVATE",
-        startDateTime: "2025-09-21T11:00:00",
+        startDateTime: getFutureDateTime(),
         passengers: 4,
       },
       {
@@ -282,7 +283,7 @@ export class AmadeusService {
         endName: "Bank of America Stadium",
         endGeoCode: "35.2251,-80.8431",
         transferType: "PRIVATE",
-        startDateTime: "2025-09-22T14:45:00",
+        startDateTime: getFutureDateTime(),
         passengers: 2,
       },
       {
@@ -294,7 +295,7 @@ export class AmadeusService {
         endName: "Ryman Auditorium",
         endGeoCode: "36.1627,-86.7816",
         transferType: "PRIVATE",
-        startDateTime: "2025-09-23T17:30:00",
+        startDateTime: getFutureDateTime(),
         passengers: 3,
       },
     ];
